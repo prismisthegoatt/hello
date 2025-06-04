@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Trading Platform</title>
+    <title>Professional Trading Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.cryptohopper.com/widgets/js/script"></script>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #9333ea;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --primary: #2962ff;
+            --primary-dark: #0039cb;
+            --secondary: #aa00ff;
+            --success: #00c853;
+            --danger: #ff1744;
+            --warning: #ffab00;
             --dark: #0f172a;
             --darker: #020617;
             --light: #f1f5f9;
             --lighter: #f8fafc;
             --gray: #94a3b8;
             --gray-dark: #64748b;
-            --card-bg: rgba(15, 23, 42, 0.8);
-            --card-border: rgba(148, 163, 184, 0.2);
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(148, 163, 184, 0.25);
+            --shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
@@ -53,6 +53,7 @@
             position: relative;
             z-index: 1;
             overflow: hidden;
+            animation: fadeIn 1s ease;
         }
 
         #login-page::before {
@@ -62,24 +63,25 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(41, 98, 255, 0.1) 0%, transparent 70%);
             z-index: -1;
-            animation: pulse 6s infinite alternate;
+            animation: pulse 8s infinite alternate;
         }
 
         .login-container {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 24px;
+            padding: 35px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             box-shadow: var(--shadow);
             text-align: center;
             position: relative;
             overflow: hidden;
-            animation: fadeIn 0.8s ease;
+            transform: translateY(20px);
+            animation: slideUp 0.8s ease forwards;
         }
 
         .login-container::after {
@@ -88,31 +90,32 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
 
         .app-logo {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
             margin-bottom: 30px;
         }
 
         .app-logo i {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
         }
 
         .app-logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .biometric-login {
@@ -124,32 +127,32 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 14px;
+            padding: 16px;
             width: 100%;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 5px 20px rgba(41, 98, 255, 0.3);
         }
 
         .biometric-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(41, 98, 255, 0.4);
         }
 
         .biometric-btn i {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
         }
 
         .divider {
             display: flex;
             align-items: center;
-            margin: 25px 0;
+            margin: 28px 0;
             color: var(--gray);
         }
 
@@ -162,63 +165,63 @@
         }
 
         .divider span {
-            padding: 0 15px;
-            font-size: 0.9rem;
+            padding: 0 18px;
+            font-size: 0.95rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             text-align: left;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 500;
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 14px;
+            padding: 16px 18px;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.5);
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.6);
             color: var(--light);
-            font-size: 1rem;
+            font-size: 1.05rem;
             transition: var(--transition);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 0 4px rgba(41, 98, 255, 0.2);
         }
 
         .login-btn {
-            background: linear-gradient(135deg, var(--secondary), #7e22ce);
+            background: linear-gradient(135deg, var(--secondary), #7b1fa2);
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 14px;
+            padding: 16px;
             width: 100%;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+            margin-top: 12px;
+            box-shadow: 0 5px 20px rgba(170, 0, 255, 0.3);
         }
 
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(170, 0, 255, 0.4);
         }
 
         #app-container {
             display: none;
-            max-width: 500px;
+            max-width: 520px;
             margin: 0 auto;
             position: relative;
         }
@@ -228,20 +231,18 @@
             top: 0;
             z-index: 100;
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--card-border);
-            padding: 15px 20px;
+            padding: 16px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .app-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -249,16 +250,16 @@
 
         .nav-tabs {
             display: flex;
-            gap: 5px;
-            background: rgba(30, 41, 59, 0.7);
+            gap: 6px;
+            background: rgba(30, 41, 59, 0.8);
             border-radius: 50px;
-            padding: 5px;
+            padding: 6px;
         }
 
         .nav-tab {
-            padding: 8px 16px;
+            padding: 9px 18px;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
@@ -270,60 +271,66 @@
         }
 
         .nav-tab:not(.active):hover {
-            background: rgba(148, 163, 184, 0.1);
+            background: rgba(148, 163, 184, 0.15);
         }
 
         .total-balance {
             text-align: center;
-            padding: 10px 20px;
-            background: rgba(15, 23, 42, 0.6);
+            padding: 12px 22px;
+            background: rgba(15, 23, 42, 0.7);
             border-bottom: 1px solid var(--card-border);
         }
 
         .balance-label {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--gray);
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .balance-amount {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
             background: linear-gradient(90deg, var(--primary), var(--success));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .page-content {
-            padding: 20px;
+            padding: 22px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 24px;
             box-shadow: var(--shadow);
-            animation: slideUp 0.4s ease;
+            animation: slideUp 0.5s ease;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
@@ -332,101 +339,102 @@
 
         .card-icon i {
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         select.form-control {
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 12px;
-            padding-right: 40px;
+            background-position: right 18px center;
+            background-size: 14px;
+            padding-right: 45px;
         }
 
         .btn {
-            padding: 14px 20px;
-            border-radius: 12px;
+            padding: 16px 22px;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.05rem;
             border: none;
             cursor: pointer;
             transition: var(--transition);
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 5px 20px rgba(41, 98, 255, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(41, 98, 255, 0.4);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--success), #16a34a);
+            background: linear-gradient(135deg, var(--success), #009624);
             color: white;
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 200, 83, 0.3);
         }
 
         .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #dc2626);
+            background: linear-gradient(135deg, var(--danger), #d50000);
             color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 23, 68, 0.3);
         }
 
         .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.4);
         }
 
         .wallet-card {
             display: flex;
             align-items: center;
-            padding: 15px;
-            background: rgba(15, 23, 42, 0.5);
+            padding: 18px;
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            margin-bottom: 10px;
+            border-radius: 14px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: var(--transition);
         }
 
         .wallet-card:hover {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.8);
             border-color: var(--primary);
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .wallet-card.active {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(41, 98, 255, 0.15);
             border-color: var(--primary);
-            transform: scale(1.02);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.25);
         }
 
         .wallet-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
+            margin-right: 18px;
         }
 
         .wallet-icon i {
             color: white;
+            font-size: 1.3rem;
         }
 
         .wallet-info {
@@ -435,26 +443,27 @@
 
         .wallet-name {
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            font-size: 1.05rem;
         }
 
         .wallet-balance {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--success);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .quick-actions {
             display: flex;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 12px;
+            margin: 18px 0;
         }
 
         .quick-btn {
             flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            background: rgba(15, 23, 42, 0.5);
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--card-border);
             color: var(--light);
             font-weight: 500;
@@ -463,51 +472,51 @@
         }
 
         .quick-btn:hover {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(41, 98, 255, 0.15);
             border-color: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .token-list {
-            max-height: 300px;
+            max-height: 320px;
             overflow-y: auto;
-            margin-top: 15px;
+            margin-top: 18px;
         }
 
         .token-item {
             display: flex;
             align-items: center;
-            padding: 15px;
-            background: rgba(15, 23, 42, 0.5);
+            padding: 18px;
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            margin-bottom: 10px;
+            border-radius: 14px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: var(--transition);
         }
 
         .token-item:hover {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.8);
             border-color: var(--primary);
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .token-item.active {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(41, 98, 255, 0.15);
             border-color: var(--primary);
-            transform: scale(1.02);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.25);
         }
 
         .token-icon {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--warning), #ea580c);
+            background: linear-gradient(135deg, var(--warning), #ff6d00);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
+            margin-right: 18px;
         }
 
         .token-icon i {
@@ -520,17 +529,20 @@
 
         .token-name {
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            font-size: 1.05rem;
         }
 
         .token-amount {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--gray);
+            margin-bottom: 4px;
         }
 
         .token-price {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--success);
+            font-weight: 600;
         }
 
         .overlay {
@@ -539,7 +551,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(2, 6, 23, 0.9);
+            background: rgba(2, 6, 23, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -547,7 +559,7 @@
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
         .overlay.active {
@@ -556,64 +568,67 @@
         }
 
         .loader {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-top: 5px solid var(--primary);
+            width: 70px;
+            height: 70px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-top: 6px solid var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            animation: spin 1.2s linear infinite;
+            margin-bottom: 25px;
         }
 
         .confirmation {
             text-align: center;
             opacity: 0;
             transform: scale(0.8);
-            animation: confirm 0.5s forwards 0.3s;
+            animation: confirm 0.6s forwards 0.3s;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 18px;
+            padding: 35px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .confirmation i {
-            font-size: 5rem;
-            background: linear-gradient(135deg, var(--success), #16a34a);
+            font-size: 5.5rem;
+            background: linear-gradient(135deg, var(--success), #008c3a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            animation: pulseIcon 1.5s infinite;
+            margin-bottom: 25px;
+            animation: pulseIcon 1.8s infinite;
         }
 
         .confirmation h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .confirmation p {
             color: var(--gray);
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            font-size: 1.15rem;
+            margin-bottom: 25px;
         }
 
         .transaction-details {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            padding: 15px;
-            margin: 20px 0;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 25px 0;
             text-align: left;
-            border-left: 4px solid var(--primary);
-            animation: fadeIn 0.5s ease;
+            border-left: 5px solid var(--primary);
+            animation: fadeIn 0.6s ease;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--card-border);
         }
 
@@ -625,10 +640,12 @@
 
         .detail-label {
             color: var(--gray);
+            font-size: 1.05rem;
         }
 
         .detail-value {
             font-weight: 600;
+            font-size: 1.05rem;
         }
 
         .profit {
@@ -641,8 +658,8 @@
 
         .confetti {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--primary);
             border-radius: 50%;
             animation: confettiFall 5s ease-in-out forwards;
@@ -650,10 +667,10 @@
         
         /* Crypto widget styling */
         .crypto-widget-container {
-            margin-top: 20px;
-            border-radius: 12px;
+            margin-top: 25px;
+            border-radius: 14px;
             overflow: hidden;
-            animation: fadeIn 1s ease;
+            animation: fadeIn 1.2s ease;
         }
         
         .cryptohopper-web-widget {
@@ -667,17 +684,17 @@
         }
         
         .cryptohopper-web-widget-header {
-            background: rgba(15, 23, 42, 0.8) !important;
+            background: rgba(15, 23, 42, 0.85) !important;
             border-bottom: 1px solid var(--card-border) !important;
         }
         
         .cryptohopper-web-widget-table {
-            background: rgba(15, 23, 42, 0.5) !important;
+            background: rgba(15, 23, 42, 0.6) !important;
             border: 1px solid var(--card-border) !important;
         }
         
         .ch-coin:hover {
-            background: rgba(37, 99, 235, 0.1) !important;
+            background: rgba(41, 98, 255, 0.15) !important;
         }
         
         /* PNL Popup */
@@ -688,46 +705,49 @@
             transform: translate(-50%, -50%);
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 18px;
+            padding: 35px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             z-index: 1001;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         
         .pnl-popup.active {
             opacity: 1;
             pointer-events: all;
-            animation: popupAppear 0.5s forwards;
+            animation: popupAppear 0.6s forwards;
         }
         
         .pnl-popup h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .pnl-details {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.6s ease;
         }
         
         .pnl-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
         .pnl-buttons button {
             flex: 1;
+            padding: 14px;
+            font-size: 1.05rem;
         }
 
         @keyframes pulse {
@@ -746,8 +766,8 @@
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         @keyframes slideUp {
@@ -767,13 +787,13 @@
         }
         
         @keyframes popupAppear {
-            0% { transform: translate(-50%, -40%); opacity: 0; }
+            0% { transform: translate(-50%, -45%); opacity: 0; }
             100% { transform: translate(-50%, -50%); opacity: 1; }
         }
 
         @media (min-width: 768px) {
             body {
-                padding: 20px;
+                padding: 25px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -785,10 +805,10 @@
             
             #app-container {
                 width: 100%;
-                max-width: 500px;
-                border-radius: 20px;
+                max-width: 520px;
+                border-radius: 24px;
                 overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             }
         }
     </style>
@@ -799,7 +819,7 @@
         <div class="login-container">
             <div class="app-logo">
                 <i class="fas fa-chart-line"></i>
-                <h1>Advanced Trading</h1>
+                <h1>ProTrader</h1>
             </div>
             
             <div class="biometric-login">
@@ -832,18 +852,18 @@
     <div id="app-container">
         <!-- Sticky Header -->
         <header class="app-header">
-            <div class="app-title">Trading Platform</div>
+            <div class="app-title">ProTrader</div>
             
             <div class="nav-tabs">
-                <div class="nav-tab active" data-page="buy">Buy Token</div>
-                <div class="nav-tab" data-page="sell">Sell Token</div>
+                <div class="nav-tab active" data-page="buy">Buy</div>
+                <div class="nav-tab" data-page="sell">Sell</div>
                 <div class="nav-tab" id="logout-btn">Logout</div>
             </div>
         </header>
         
         <!-- Total Balance Display -->
         <div class="total-balance">
-            <div class="balance-label">Total Balance</div>
+            <div class="balance-label">Total Portfolio Value</div>
             <div class="balance-amount" id="total-balance">$0.00</div>
         </div>
         
@@ -853,15 +873,15 @@
             <div id="buy-page">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Buy Crypto Token</div>
+                        <div class="card-title">Buy Crypto Assets</div>
                         <div class="card-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="token-id">Token ID</label>
-                        <input type="text" id="token-id" class="form-control" placeholder="Enter token symbol (e.g. BTC, ETH)">
+                        <label for="token-id">Asset Symbol</label>
+                        <input type="text" id="token-id" class="form-control" placeholder="Enter asset symbol (e.g. BTC, ETH)">
                     </div>
                     
                     <div class="form-group">
@@ -870,7 +890,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Select Wallet</label>
+                        <label>Select Funding Wallet</label>
                         <div id="wallet-list">
                             <!-- Wallets will be populated here -->
                         </div>
@@ -882,7 +902,7 @@
                 <!-- Live Crypto Prices Widget -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Live Market Prices</div>
+                        <div class="card-title">Real-Time Market Prices</div>
                         <div class="card-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
@@ -891,7 +911,7 @@
                         <div class="cryptohopper-web-widget" 
                              data-id="2" 
                              data-background_color="transparent" 
-                             data-coins="bitcoin,ethereum,tether,solana">
+                             data-coins="bitcoin,ethereum,tether,solana,cardano,ripple,dogecoin,polkadot">
                         </div>
                     </div>
                 </div>
@@ -914,20 +934,20 @@
             <div id="sell-page" style="display: none;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Your Token Holdings</div>
+                        <div class="card-title">Your Asset Holdings</div>
                         <div class="card-icon">
                             <i class="fas fa-coins"></i>
                         </div>
                     </div>
                     
                     <div id="token-holdings">
-                        <p class="empty-message">You don't own any tokens yet</p>
+                        <p class="empty-message">You don't own any assets yet</p>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Sell Token</div>
+                        <div class="card-title">Sell Assets</div>
                         <div class="card-icon">
                             <i class="fas fa-cash-register"></i>
                         </div>
@@ -953,7 +973,7 @@
                         </select>
                     </div>
                     
-                    <button id="sell-btn" class="btn btn-danger" disabled>Sell Token</button>
+                    <button id="sell-btn" class="btn btn-danger" disabled>Execute Sale</button>
                 </div>
             </div>
         </div>
@@ -973,13 +993,13 @@
     
     <!-- PNL Popup -->
     <div class="pnl-popup" id="pnl-popup">
-        <h2>Profit & Loss Details</h2>
+        <h2>Profit & Loss Statement</h2>
         <div class="pnl-details" id="pnl-details">
             <!-- PNL details will be populated here -->
         </div>
         <div class="pnl-buttons">
             <button id="pnl-ok" class="btn btn-primary">OK</button>
-            <button id="view-pnl" class="btn btn-success">View P&L</button>
+            <button id="view-pnl" class="btn btn-success">View Details</button>
         </div>
     </div>
     
@@ -1045,11 +1065,11 @@
         // Generate random wallets with total around 290k
         function generateWallets() {
             const wallets = [
-                { id: 'wallet1', name: 'Main Wallet', balance: 124847 },
-                { id: 'wallet2', name: 'Trading Wallet', balance: 65892 },
-                { id: 'wallet3', name: 'Savings Wallet', balance: 82536 },
-                { id: 'wallet4', name: 'Investment Wallet', balance: 76319 },
-                { id: 'wallet5', name: 'Secure Wallet', balance: 38406 }
+                { id: 'wallet1', name: 'Primary Wallet', balance: 134847 },
+                { id: 'wallet2', name: 'Trading Wallet', balance: 75892 },
+                { id: 'wallet3', name: 'Savings Wallet', balance: 42536 },
+                { id: 'wallet4', name: 'Investment Wallet', balance: 26319 },
+                { id: 'wallet5', name: 'Secure Wallet', balance: 10406 }
             ];
             
             localStorage.setItem('wallets', JSON.stringify(wallets));
@@ -1079,7 +1099,17 @@
         // Calculate total balance
         function calculateTotalBalance() {
             const wallets = getWallets();
-            return wallets.reduce((total, wallet) => total + wallet.balance, 0);
+            const tokens = getTokens();
+            
+            // Calculate wallet balances
+            const walletTotal = wallets.reduce((total, wallet) => total + wallet.balance, 0);
+            
+            // Calculate token values
+            const tokenTotal = tokens.reduce((total, token) => {
+                return total + (token.amount * token.currentPrice);
+            }, 0);
+            
+            return walletTotal + tokenTotal;
         }
         
         // Update total balance display
@@ -1090,16 +1120,16 @@
         
         // Create confetti effect
         function createConfetti() {
-            const colors = ['#2563eb', '#9333ea', '#22c55e', '#f59e0b', '#ef4444'];
+            const colors = ['#2962ff', '#aa00ff', '#00c853', '#ffab00', '#ff1744'];
             const container = document.querySelector('.overlay');
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 120; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.animationDelay = Math.random() * 5 + 's';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.width = (Math.random() * 12 + 6) + 'px';
                 confetti.style.height = confetti.style.width;
                 container.appendChild(confetti);
                 
@@ -1149,25 +1179,52 @@
             });
         }
         
-        // Render token holdings
+        // Calculate realistic current price based on market fluctuations
+        function calculateCurrentPrice(purchasePrice, daysHeld) {
+            // More realistic price fluctuations based on time held and market volatility
+            const baseVolatility = 0.02; // 2% daily volatility
+            const timeFactor = Math.min(daysHeld / 30, 1); // Cap at 30 days
+            
+            // Simulate price movement with random walk
+            let currentPrice = purchasePrice;
+            for (let i = 0; i < daysHeld; i++) {
+                // Random price change between -2% to +3%
+                const change = (Math.random() * 0.05 - 0.02) * baseVolatility * timeFactor;
+                currentPrice *= (1 + change);
+            }
+            
+            // Ensure price doesn't go below 50% or above 200% of purchase price
+            currentPrice = Math.max(purchasePrice * 0.5, Math.min(purchasePrice * 2, currentPrice));
+            
+            return currentPrice;
+        }
+        
+        // Render token holdings with realistic pricing
         function renderTokenHoldings() {
             const tokens = getTokens();
             tokenHoldings.innerHTML = '';
             
             if (tokens.length === 0) {
-                tokenHoldings.innerHTML = '<p class="empty-message">You don\'t own any tokens yet</p>';
+                tokenHoldings.innerHTML = '<p class="empty-message">You don\'t own any assets yet</p>';
                 return;
             }
             
             tokens.forEach(token => {
+                // Calculate days held
+                const purchaseDate = new Date(token.purchaseDate);
+                const daysHeld = Math.floor((new Date() - purchaseDate) / (1000 * 60 * 60 * 24));
+                
+                // Calculate current price based on realistic market fluctuations
+                token.currentPrice = calculateCurrentPrice(token.purchasePrice, daysHeld);
+                
                 const tokenElement = document.createElement('div');
                 tokenElement.className = 'token-item';
                 tokenElement.dataset.id = token.id;
                 
-                // Determine if token has increased or decreased in value
-                const currentPrice = token.currentPrice || token.purchasePrice * (Math.random() * 0.4 + 0.8);
-                const priceChange = ((currentPrice - token.purchasePrice) / token.purchasePrice * 100).toFixed(2);
-                const isProfit = currentPrice > token.purchasePrice;
+                // Calculate profit percentage
+                const profitPercent = ((token.currentPrice - token.purchasePrice) / token.purchasePrice * 100).toFixed(2);
+                const isProfit = token.currentPrice > token.purchasePrice;
+                const profitClass = isProfit ? 'profit' : 'loss';
                 
                 tokenElement.innerHTML = `
                     <div class="token-icon">
@@ -1175,8 +1232,9 @@
                     </div>
                     <div class="token-info">
                         <div class="token-name">${token.id.toUpperCase()}</div>
-                        <div class="token-amount">Amount: ${token.amount.toFixed(4)}</div>
-                        <div class="token-price">Price: ${formatCurrency(currentPrice)} <span class="${isProfit ? 'profit' : 'loss'}">(${priceChange}%)</span></div>
+                        <div class="token-amount">Holding: ${token.amount.toFixed(4)}</div>
+                        <div class="token-price">Value: ${formatCurrency(token.amount * token.currentPrice)}</div>
+                        <div class="token-price">P/L: <span class="${profitClass}">${profitPercent}%</span></div>
                     </div>
                 `;
                 
@@ -1199,6 +1257,9 @@
                 
                 tokenHoldings.appendChild(tokenElement);
             });
+            
+            // Save updated tokens with current prices
+            localStorage.setItem('tokens', JSON.stringify(tokens));
         }
         
         // Render recent transactions
@@ -1220,11 +1281,11 @@
                 
                 let details = '';
                 if (transaction.profit !== undefined) {
-                    details = `<div class="token-amount">Profit: <span class="${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</span></div>`;
+                    details = `<div class="token-price">P/L: <span class="${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</span></div>`;
                 }
                 
                 transactionElement.innerHTML = `
-                    <div class="token-icon" style="background: ${transaction.type === 'buy' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'linear-gradient(135deg, var(--danger), #dc2626)'}">
+                    <div class="token-icon" style="background: ${transaction.type === 'buy' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'linear-gradient(135deg, var(--danger), #d50000)'}">
                         <i class="fas ${transaction.type === 'buy' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
                     </div>
                     <div class="token-info">
@@ -1238,12 +1299,12 @@
             });
         }
         
-        // Show PNL popup
+        // Show PNL popup with realistic profit/loss
         function showPnlPopup(transaction) {
             lastTransaction = transaction;
             pnlDetails.innerHTML = `
                 <div class="detail-row">
-                    <div class="detail-label">Token</div>
+                    <div class="detail-label">Asset</div>
                     <div class="detail-value">${transaction.token.toUpperCase()}</div>
                 </div>
                 <div class="detail-row">
@@ -1251,7 +1312,11 @@
                     <div class="detail-value">${transaction.amount}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Purchase Price</div>
+                    <div class="detail-label">Holding Period</div>
+                    <div class="detail-value">${transaction.daysHeld} days</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Avg Purchase Price</div>
                     <div class="detail-value">${formatCurrency(transaction.purchasePrice)}</div>
                 </div>
                 <div class="detail-row">
@@ -1286,7 +1351,7 @@
                 confirmation.style.opacity = '0';
                 
                 setTimeout(() => {
-                    if (Math.random() < 0.8) {
+                    if (Math.random() < 0.85) {
                         resolve();
                     } else {
                         reject(new Error('Biometric authentication failed'));
@@ -1344,7 +1409,7 @@
             const amount = parseFloat(buyAmountInput.value);
             
             if (!tokenId) {
-                alert('Please enter a token ID');
+                alert('Please enter an asset symbol');
                 return;
             }
             
@@ -1354,7 +1419,7 @@
             }
             
             if (!selectedWallet) {
-                alert('Please select a wallet');
+                alert('Please select a funding wallet');
                 return;
             }
             
@@ -1376,19 +1441,22 @@
                     // Add token to holdings
                     const tokens = getTokens();
                     const existingToken = tokens.find(t => t.id === tokenId);
-                    const purchasePrice = amount * (0.95 + Math.random() * 0.1); // Simulated price fluctuation
+                    
+                    // Calculate purchase price (with simulated fees)
+                    const purchasePrice = amount * (0.995 + Math.random() * 0.005);
                     
                     if (existingToken) {
                         // Recalculate average purchase price
                         const totalAmount = existingToken.amount + amount;
                         existingToken.purchasePrice = (existingToken.purchasePrice * existingToken.amount + purchasePrice) / totalAmount;
                         existingToken.amount = totalAmount;
+                        existingToken.purchaseDate = new Date().toISOString();
                     } else {
                         tokens.push({
                             id: tokenId,
                             amount: amount,
                             purchasePrice: purchasePrice,
-                            currentPrice: purchasePrice * (0.9 + Math.random() * 0.2) // Initial current price
+                            purchaseDate: new Date().toISOString()
                         });
                     }
                     
@@ -1409,7 +1477,7 @@
                     localStorage.setItem('transactions', JSON.stringify(transactions));
                     
                     // Show confirmation
-                    confirmationTitle.textContent = 'Trade Confirmed!';
+                    confirmationTitle.textContent = 'Purchase Confirmed!';
                     confirmationDetails.textContent = `You bought $${amount} of ${tokenId.toUpperCase()}`;
                     transactionDetails.innerHTML = '';
                     confirmation.style.opacity = '1';
@@ -1439,13 +1507,13 @@
                 });
         }
         
-        // Handle sell token
+        // Handle sell token with realistic profit/loss
         function handleSellToken() {
             const amount = parseFloat(sellAmountInput.value);
             const walletId = destinationWallet.value;
             
             if (!selectedToken) {
-                alert('Please select a token to sell');
+                alert('Please select an asset to sell');
                 return;
             }
             
@@ -1463,16 +1531,19 @@
             const token = tokens.find(t => t.id === selectedToken);
             
             if (token.amount < amount) {
-                alert(`You only have ${token.amount.toFixed(4)} of this token`);
+                alert(`You only have ${token.amount.toFixed(4)} of this asset`);
                 return;
             }
             
             const wallets = getWallets();
             const wallet = wallets.find(w => w.id === walletId);
             
-            // Calculate selling price with fluctuation
-            const priceMultiplier = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
-            const sellingPrice = token.purchasePrice * priceMultiplier;
+            // Calculate days held
+            const purchaseDate = new Date(token.purchaseDate);
+            const daysHeld = Math.floor((new Date() - purchaseDate) / (1000 * 60 * 60 * 24));
+            
+            // Calculate selling price with realistic market fluctuations
+            const sellingPrice = calculateCurrentPrice(token.purchasePrice, daysHeld);
             const sellingAmount = amount * sellingPrice;
             const purchaseAmount = amount * token.purchasePrice;
             const profit = sellingAmount - purchaseAmount;
@@ -1506,6 +1577,7 @@
                         sellingPrice: sellingPrice,
                         purchasePrice: token.purchasePrice,
                         profit: profit,
+                        daysHeld: daysHeld,
                         timestamp: new Date().toISOString()
                     };
                     
@@ -1513,13 +1585,13 @@
                     localStorage.setItem('transactions', JSON.stringify(transactions));
                     
                     // Show confirmation
-                    confirmationTitle.textContent = 'Sell Confirmed!';
+                    confirmationTitle.textContent = 'Sale Confirmed!';
                     confirmationDetails.textContent = `You sold $${amount} of ${selectedToken.toUpperCase()}`;
                     transactionDetails.innerHTML = '';
                     confirmation.style.opacity = '1';
                     createConfetti();
                     
-                    // Hide overlay when OK is clicked
+                    // Hide overlay when OK is clicked and show PNL popup
                     confirmationOk.onclick = () => {
                         loadingOverlay.classList.remove('active');
                         showPnlPopup(transaction);
@@ -1620,7 +1692,7 @@
         
         viewPnl.addEventListener('click', () => {
             if (lastTransaction) {
-                pnlPopup.classList.remove('active');
+                // For demo purposes, we'll just show the same popup again
                 showPnlPopup(lastTransaction);
             }
         });
