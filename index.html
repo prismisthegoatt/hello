@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoBot Pro</title>
+    <title>Advanced Trading Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.cryptohopper.com/widgets/js/script"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -78,6 +79,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            animation: fadeIn 0.8s ease;
         }
 
         .login-container::after {
@@ -240,10 +242,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .app-title i {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -306,6 +305,7 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: var(--shadow);
+            animation: slideUp 0.4s ease;
         }
 
         .card-header {
@@ -367,6 +367,17 @@
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, var(--danger), #dc2626);
             color: white;
@@ -393,11 +404,14 @@
         .wallet-card:hover {
             background: rgba(30, 41, 59, 0.7);
             border-color: var(--primary);
+            transform: translateX(5px);
         }
 
         .wallet-card.active {
             background: rgba(37, 99, 235, 0.1);
             border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
         .wallet-icon {
@@ -451,6 +465,7 @@
         .quick-btn:hover {
             background: rgba(37, 99, 235, 0.1);
             border-color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .token-list {
@@ -474,11 +489,14 @@
         .token-item:hover {
             background: rgba(30, 41, 59, 0.7);
             border-color: var(--primary);
+            transform: translateX(5px);
         }
 
         .token-item.active {
             background: rgba(37, 99, 235, 0.1);
             border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
         .token-icon {
@@ -508,6 +526,11 @@
         .token-amount {
             font-size: 0.9rem;
             color: var(--gray);
+        }
+
+        .token-price {
+            font-size: 0.9rem;
+            color: var(--success);
         }
 
         .overlay {
@@ -547,6 +570,13 @@
             opacity: 0;
             transform: scale(0.8);
             animation: confirm 0.5s forwards 0.3s;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .confirmation i {
@@ -555,6 +585,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            animation: pulseIcon 1.5s infinite;
         }
 
         .confirmation h2 {
@@ -565,6 +596,138 @@
         .confirmation p {
             color: var(--gray);
             font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .transaction-details {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--gray);
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+
+        .profit {
+            color: var(--success);
+        }
+
+        .loss {
+            color: var(--danger);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: confettiFall 5s ease-in-out forwards;
+        }
+        
+        /* Crypto widget styling */
+        .crypto-widget-container {
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeIn 1s ease;
+        }
+        
+        .cryptohopper-web-widget {
+            background: transparent !important;
+            border: none !important;
+        }
+        
+        .cryptohopper-web-widget * {
+            color: var(--light) !important;
+            background: transparent !important;
+        }
+        
+        .cryptohopper-web-widget-header {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border-bottom: 1px solid var(--card-border) !important;
+        }
+        
+        .cryptohopper-web-widget-table {
+            background: rgba(15, 23, 42, 0.5) !important;
+            border: 1px solid var(--card-border) !important;
+        }
+        
+        .ch-coin:hover {
+            background: rgba(37, 99, 235, 0.1) !important;
+        }
+        
+        /* PNL Popup */
+        .pnl-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .pnl-popup.active {
+            opacity: 1;
+            pointer-events: all;
+            animation: popupAppear 0.5s forwards;
+        }
+        
+        .pnl-popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pnl-details {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .pnl-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .pnl-buttons button {
+            flex: 1;
         }
 
         @keyframes pulse {
@@ -580,6 +743,32 @@
         @keyframes confirm {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        @keyframes popupAppear {
+            0% { transform: translate(-50%, -40%); opacity: 0; }
+            100% { transform: translate(-50%, -50%); opacity: 1; }
         }
 
         @media (min-width: 768px) {
@@ -609,8 +798,8 @@
     <div id="login-page">
         <div class="login-container">
             <div class="app-logo">
-                <i class="fas fa-robot"></i>
-                <h1>CryptoBot Pro</h1>
+                <i class="fas fa-chart-line"></i>
+                <h1>Advanced Trading</h1>
             </div>
             
             <div class="biometric-login">
@@ -626,12 +815,12 @@
             <form id="login-form">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" class="form-control" value="mohamedruzain" readonly>
+                    <input type="text" id="username" class="form-control" placeholder="Enter your username">
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" value="20071205ruzain" readonly>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password">
                 </div>
                 
                 <button type="submit" class="login-btn">Sign In</button>
@@ -643,10 +832,7 @@
     <div id="app-container">
         <!-- Sticky Header -->
         <header class="app-header">
-            <div class="app-title">
-                <i class="fas fa-robot"></i>
-                <span>CryptoBot Pro</span>
-            </div>
+            <div class="app-title">Trading Platform</div>
             
             <div class="nav-tabs">
                 <div class="nav-tab active" data-page="buy">Buy Token</div>
@@ -691,6 +877,23 @@
                     </div>
                     
                     <button id="buy-btn" class="btn btn-primary">Execute Trade</button>
+                </div>
+                
+                <!-- Live Crypto Prices Widget -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Live Market Prices</div>
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="crypto-widget-container">
+                        <div class="cryptohopper-web-widget" 
+                             data-id="2" 
+                             data-background_color="transparent" 
+                             data-coins="bitcoin,ethereum,tether,solana">
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="card">
@@ -763,6 +966,20 @@
             <i class="fas fa-check-circle"></i>
             <h2 id="confirmation-title">Trade Confirmed!</h2>
             <p id="confirmation-details">Your transaction was successful</p>
+            <div id="transaction-details"></div>
+            <button id="confirmation-ok" class="btn btn-primary">OK</button>
+        </div>
+    </div>
+    
+    <!-- PNL Popup -->
+    <div class="pnl-popup" id="pnl-popup">
+        <h2>Profit & Loss Details</h2>
+        <div class="pnl-details" id="pnl-details">
+            <!-- PNL details will be populated here -->
+        </div>
+        <div class="pnl-buttons">
+            <button id="pnl-ok" class="btn btn-primary">OK</button>
+            <button id="view-pnl" class="btn btn-success">View P&L</button>
         </div>
     </div>
     
@@ -786,16 +1003,23 @@
         const confirmation = document.getElementById('confirmation');
         const confirmationTitle = document.getElementById('confirmation-title');
         const confirmationDetails = document.getElementById('confirmation-details');
+        const transactionDetails = document.getElementById('transaction-details');
+        const confirmationOk = document.getElementById('confirmation-ok');
         const tokenIdInput = document.getElementById('token-id');
         const buyAmountInput = document.getElementById('buy-amount');
         const sellAmountInput = document.getElementById('sell-amount');
         const quickBtns = document.querySelectorAll('.quick-btn');
         const totalBalanceEl = document.getElementById('total-balance');
+        const pnlPopup = document.getElementById('pnl-popup');
+        const pnlDetails = document.getElementById('pnl-details');
+        const pnlOk = document.getElementById('pnl-ok');
+        const viewPnl = document.getElementById('view-pnl');
         
         // App State
         let currentPage = 'buy';
         let selectedToken = null;
         let selectedWallet = null;
+        let lastTransaction = null;
         
         // Initialize the app
         function initApp() {
@@ -820,35 +1044,13 @@
         
         // Generate random wallets with total around 290k
         function generateWallets() {
-            // Generate 5 wallets with total around 290k
-            const wallets = [];
-            let total = 0;
-            
-            // Generate 4 wallets with balances between 50k and 90k
-            for (let i = 0; i < 4; i++) {
-                const balance = Math.floor(Math.random() * 40000) + 50000;
-                wallets.push({
-                    id: `wallet${i+1}`,
-                    name: ['Main Wallet', 'Trading Wallet', 'Savings Wallet', 'Investment Wallet'][i],
-                    balance: balance
-                });
-                total += balance;
-            }
-            
-            // Generate the last wallet to make total around 290k
-            const lastBalance = 290000 - total + Math.floor(Math.random() * 10000) - 5000;
-            wallets.push({
-                id: 'wallet5',
-                name: 'Secure Wallet',
-                balance: lastBalance < 40000 ? 38000 : lastBalance // Ensure one is below 40k
-            });
-            
-            // Adjust total to account for the last wallet
-            total += wallets[4].balance;
-            
-            // If total is not exactly 290k, adjust the first wallet
-            const difference = 290000 - total;
-            wallets[0].balance += difference;
+            const wallets = [
+                { id: 'wallet1', name: 'Main Wallet', balance: 124847 },
+                { id: 'wallet2', name: 'Trading Wallet', balance: 65892 },
+                { id: 'wallet3', name: 'Savings Wallet', balance: 82536 },
+                { id: 'wallet4', name: 'Investment Wallet', balance: 76319 },
+                { id: 'wallet5', name: 'Secure Wallet', balance: 38406 }
+            ];
             
             localStorage.setItem('wallets', JSON.stringify(wallets));
             return wallets;
@@ -884,6 +1086,27 @@
         function updateTotalBalance() {
             const total = calculateTotalBalance();
             totalBalanceEl.textContent = formatCurrency(total);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#2563eb', '#9333ea', '#22c55e', '#f59e0b', '#ef4444'];
+            const container = document.querySelector('.overlay');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = confetti.style.width;
+                container.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
         }
         
         // Render wallets
@@ -940,6 +1163,12 @@
                 const tokenElement = document.createElement('div');
                 tokenElement.className = 'token-item';
                 tokenElement.dataset.id = token.id;
+                
+                // Determine if token has increased or decreased in value
+                const currentPrice = token.currentPrice || token.purchasePrice * (Math.random() * 0.4 + 0.8);
+                const priceChange = ((currentPrice - token.purchasePrice) / token.purchasePrice * 100).toFixed(2);
+                const isProfit = currentPrice > token.purchasePrice;
+                
                 tokenElement.innerHTML = `
                     <div class="token-icon">
                         <i class="fab fa-bitcoin"></i>
@@ -947,6 +1176,7 @@
                     <div class="token-info">
                         <div class="token-name">${token.id.toUpperCase()}</div>
                         <div class="token-amount">Amount: ${token.amount.toFixed(4)}</div>
+                        <div class="token-price">Price: ${formatCurrency(currentPrice)} <span class="${isProfit ? 'profit' : 'loss'}">(${priceChange}%)</span></div>
                     </div>
                 `;
                 
@@ -987,6 +1217,12 @@
             recent.forEach(transaction => {
                 const transactionElement = document.createElement('div');
                 transactionElement.className = 'token-item';
+                
+                let details = '';
+                if (transaction.profit !== undefined) {
+                    details = `<div class="token-amount">Profit: <span class="${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</span></div>`;
+                }
+                
                 transactionElement.innerHTML = `
                     <div class="token-icon" style="background: ${transaction.type === 'buy' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'linear-gradient(135deg, var(--danger), #dc2626)'}">
                         <i class="fas ${transaction.type === 'buy' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
@@ -994,11 +1230,41 @@
                     <div class="token-info">
                         <div class="token-name">${transaction.type === 'buy' ? 'Bought' : 'Sold'} ${transaction.token.toUpperCase()}</div>
                         <div class="token-amount">Amount: ${transaction.amount} • Wallet: ${transaction.walletName}</div>
+                        ${details}
                     </div>
                 `;
                 
                 recentTransactions.appendChild(transactionElement);
             });
+        }
+        
+        // Show PNL popup
+        function showPnlPopup(transaction) {
+            lastTransaction = transaction;
+            pnlDetails.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Token</div>
+                    <div class="detail-value">${transaction.token.toUpperCase()}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Amount Sold</div>
+                    <div class="detail-value">${transaction.amount}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Purchase Price</div>
+                    <div class="detail-value">${formatCurrency(transaction.purchasePrice)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Selling Price</div>
+                    <div class="detail-value">${formatCurrency(transaction.sellingPrice)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Profit/Loss</div>
+                    <div class="detail-value ${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</div>
+                </div>
+            `;
+            
+            pnlPopup.classList.add('active');
         }
         
         // Show the app interface
@@ -1043,8 +1309,15 @@
         
         // Handle login
         function handleLogin() {
-            localStorage.setItem('loggedIn', 'true');
-            showApp();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'mohamedruzain' && password === '20071205ruzain') {
+                localStorage.setItem('loggedIn', 'true');
+                showApp();
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
         }
         
         // Handle logout
@@ -1059,6 +1332,10 @@
             sellAmountInput.value = '';
             selectedToken = null;
             selectedWallet = null;
+            
+            // Clear login form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
         }
         
         // Handle buy token
@@ -1099,14 +1376,19 @@
                     // Add token to holdings
                     const tokens = getTokens();
                     const existingToken = tokens.find(t => t.id === tokenId);
+                    const purchasePrice = amount * (0.95 + Math.random() * 0.1); // Simulated price fluctuation
                     
                     if (existingToken) {
-                        existingToken.amount += amount;
+                        // Recalculate average purchase price
+                        const totalAmount = existingToken.amount + amount;
+                        existingToken.purchasePrice = (existingToken.purchasePrice * existingToken.amount + purchasePrice) / totalAmount;
+                        existingToken.amount = totalAmount;
                     } else {
                         tokens.push({
                             id: tokenId,
                             amount: amount,
-                            purchasePrice: amount / amount
+                            purchasePrice: purchasePrice,
+                            currentPrice: purchasePrice * (0.9 + Math.random() * 0.2) // Initial current price
                         });
                     }
                     
@@ -1129,10 +1411,12 @@
                     // Show confirmation
                     confirmationTitle.textContent = 'Trade Confirmed!';
                     confirmationDetails.textContent = `You bought $${amount} of ${tokenId.toUpperCase()}`;
+                    transactionDetails.innerHTML = '';
                     confirmation.style.opacity = '1';
+                    createConfetti();
                     
-                    // Hide overlay after 3 seconds
-                    setTimeout(() => {
+                    // Hide overlay after 3 seconds or when OK is clicked
+                    confirmationOk.onclick = () => {
                         loadingOverlay.classList.remove('active');
                         
                         // Reset form and update UI
@@ -1147,7 +1431,7 @@
                         renderTokenHoldings();
                         renderRecentTransactions();
                         updateTotalBalance();
-                    }, 3000);
+                    };
                 })
                 .catch(error => {
                     alert(`Trade failed: ${error.message}`);
@@ -1186,6 +1470,13 @@
             const wallets = getWallets();
             const wallet = wallets.find(w => w.id === walletId);
             
+            // Calculate selling price with fluctuation
+            const priceMultiplier = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+            const sellingPrice = token.purchasePrice * priceMultiplier;
+            const sellingAmount = amount * sellingPrice;
+            const purchaseAmount = amount * token.purchasePrice;
+            const profit = sellingAmount - purchaseAmount;
+            
             // Execute trade
             executeTrade('sell', { token, amount, wallet })
                 .then(() => {
@@ -1200,50 +1491,39 @@
                     localStorage.setItem('tokens', JSON.stringify(tokens));
                     
                     // Update wallet balance
-                    wallet.balance += amount;
+                    wallet.balance += sellingAmount;
                     localStorage.setItem('wallets', JSON.stringify(wallets));
                     
                     // Add transaction
                     const transactions = getTransactions();
-                    transactions.push({
+                    const transaction = {
                         id: Date.now(),
                         type: 'sell',
                         token: selectedToken,
                         amount: amount,
                         walletId: walletId,
                         walletName: wallet.name,
+                        sellingPrice: sellingPrice,
+                        purchasePrice: token.purchasePrice,
+                        profit: profit,
                         timestamp: new Date().toISOString()
-                    });
+                    };
                     
+                    transactions.push(transaction);
                     localStorage.setItem('transactions', JSON.stringify(transactions));
                     
                     // Show confirmation
                     confirmationTitle.textContent = 'Sell Confirmed!';
                     confirmationDetails.textContent = `You sold $${amount} of ${selectedToken.toUpperCase()}`;
+                    transactionDetails.innerHTML = '';
                     confirmation.style.opacity = '1';
+                    createConfetti();
                     
-                    // Hide overlay after 3 seconds
-                    setTimeout(() => {
+                    // Hide overlay when OK is clicked
+                    confirmationOk.onclick = () => {
                         loadingOverlay.classList.remove('active');
-                        
-                        // Reset form and update UI
-                        sellAmountInput.value = '';
-                        destinationWallet.value = '';
-                        document.querySelectorAll('.token-item').forEach(item => {
-                            item.classList.remove('active');
-                        });
-                        selectedToken = null;
-                        
-                        // Disable controls
-                        sellAmountInput.disabled = true;
-                        destinationWallet.disabled = true;
-                        sellBtn.disabled = true;
-                        
-                        renderWallets();
-                        renderTokenHoldings();
-                        renderRecentTransactions();
-                        updateTotalBalance();
-                    }, 3000);
+                        showPnlPopup(transaction);
+                    };
                 })
                 .catch(error => {
                     alert(`Trade failed: ${error.message}`);
@@ -1285,6 +1565,7 @@
                         buyPage.style.display = 'none';
                         sellPage.style.display = 'block';
                         currentPage = 'sell';
+                        renderTokenHoldings();
                     }
                 } else if (tab.id === 'logout-btn') {
                     handleLogout();
@@ -1309,6 +1590,39 @@
                     sellAmountInput.value = amount.toFixed(4);
                 }
             });
+        });
+        
+        confirmationOk.addEventListener('click', () => {
+            loadingOverlay.classList.remove('active');
+        });
+        
+        pnlOk.addEventListener('click', () => {
+            pnlPopup.classList.remove('active');
+            
+            // Reset form and update UI
+            sellAmountInput.value = '';
+            destinationWallet.value = '';
+            document.querySelectorAll('.token-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            selectedToken = null;
+            
+            // Disable controls
+            sellAmountInput.disabled = true;
+            destinationWallet.disabled = true;
+            sellBtn.disabled = true;
+            
+            renderWallets();
+            renderTokenHoldings();
+            renderRecentTransactions();
+            updateTotalBalance();
+        });
+        
+        viewPnl.addEventListener('click', () => {
+            if (lastTransaction) {
+                pnlPopup.classList.remove('active');
+                showPnlPopup(lastTransaction);
+            }
         });
         
         // Initialize the app
