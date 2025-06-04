@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoBot Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #9333ea;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+            --lighter: #f8fafc;
+            --gray: #94a3b8;
+            --gray-dark: #64748b;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-border: rgba(148, 163, 184, 0.2);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #login-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        #login-page::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse 6s infinite alternate;
+        }
+
+        .login-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .app-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .app-logo i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .biometric-login {
+            margin-bottom: 25px;
+        }
+
+        .biometric-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .biometric-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .biometric-btn i {
+            font-size: 1.4rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--gray);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--card-border);
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--secondary), #7e22ce);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.4);
+        }
+
+        #app-container {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-title i {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 50px;
+            padding: 5px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .nav-tab:not(.active):hover {
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .total-balance {
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .balance-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+
+        .balance-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-content {
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon i {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+            padding-right: 40px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .wallet-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wallet-card:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: var(--primary);
+        }
+
+        .wallet-card.active {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+        }
+
+        .wallet-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .wallet-icon i {
+            color: white;
+        }
+
+        .wallet-info {
+            flex: 1;
+        }
+
+        .wallet-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .wallet-balance {
+            font-size: 0.9rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quick-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            color: var(--light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-btn:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+        }
+
+        .token-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .token-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .token-item:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: var(--primary);
+        }
+
+        .token-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+        }
+
+        .token-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--warning), #ea580c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .token-icon i {
+            color: white;
+        }
+
+        .token-info {
+            flex: 1;
+        }
+
+        .token-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .token-amount {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(2, 6, 23, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .confirmation {
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: confirm 0.5s forwards 0.3s;
+        }
+
+        .confirmation i {
+            font-size: 5rem;
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .confirmation h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .confirmation p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes confirm {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #login-page {
+                width: 100%;
+            }
+            
+            #app-container {
+                width: 100%;
+                max-width: 500px;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page">
+        <div class="login-container">
+            <div class="app-logo">
+                <i class="fas fa-robot"></i>
+                <h1>CryptoBot Pro</h1>
+            </div>
+            
+            <div class="biometric-login">
+                <button id="biometric-btn" class="biometric-btn">
+                    <i class="fas fa-fingerprint"></i> Login with Biometrics
+                </button>
+            </div>
+            
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" value="mohamedruzain" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" value="20071205ruzain" readonly>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- App Container -->
+    <div id="app-container">
+        <!-- Sticky Header -->
+        <header class="app-header">
+            <div class="app-title">
+                <i class="fas fa-robot"></i>
+                <span>CryptoBot Pro</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-page="buy">Buy Token</div>
+                <div class="nav-tab" data-page="sell">Sell Token</div>
+                <div class="nav-tab" id="logout-btn">Logout</div>
+            </div>
+        </header>
+        
+        <!-- Total Balance Display -->
+        <div class="total-balance">
+            <div class="balance-label">Total Balance</div>
+            <div class="balance-amount" id="total-balance">$0.00</div>
+        </div>
+        
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Buy Token Page -->
+            <div id="buy-page">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Buy Crypto Token</div>
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="token-id">Token ID</label>
+                        <input type="text" id="token-id" class="form-control" placeholder="Enter token symbol (e.g. BTC, ETH)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="buy-amount">Amount to Buy (USD)</label>
+                        <input type="number" id="buy-amount" class="form-control" placeholder="Enter amount">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Wallet</label>
+                        <div id="wallet-list">
+                            <!-- Wallets will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <button id="buy-btn" class="btn btn-primary">Execute Trade</button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Recent Transactions</div>
+                        <div class="card-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="recent-transactions">
+                        <p class="empty-message">No transactions yet</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sell Token Page -->
+            <div id="sell-page" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Your Token Holdings</div>
+                        <div class="card-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="token-holdings">
+                        <p class="empty-message">You don't own any tokens yet</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Sell Token</div>
+                        <div class="card-icon">
+                            <i class="fas fa-cash-register"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sell-amount">Amount to Sell</label>
+                        <input type="number" id="sell-amount" class="form-control" placeholder="Enter amount" disabled>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-btn" data-percent="25">25%</button>
+                        <button class="quick-btn" data-percent="50">50%</button>
+                        <button class="quick-btn" data-percent="75">75%</button>
+                        <button class="quick-btn" data-percent="100">100%</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="destination-wallet">Destination Wallet</label>
+                        <select id="destination-wallet" class="form-control" disabled>
+                            <option value="">Select a wallet</option>
+                            <!-- Wallets will be populated here -->
+                        </select>
+                    </div>
+                    
+                    <button id="sell-btn" class="btn btn-danger" disabled>Sell Token</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading and Confirmation Overlay -->
+    <div class="overlay" id="loading-overlay">
+        <div class="loader"></div>
+        <div class="confirmation" id="confirmation">
+            <i class="fas fa-check-circle"></i>
+            <h2 id="confirmation-title">Trade Confirmed!</h2>
+            <p id="confirmation-details">Your transaction was successful</p>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const appContainer = document.getElementById('app-container');
+        const biometricBtn = document.getElementById('biometric-btn');
+        const loginForm = document.getElementById('login-form');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const buyPage = document.getElementById('buy-page');
+        const sellPage = document.getElementById('sell-page');
+        const logoutBtn = document.getElementById('logout-btn');
+        const buyBtn = document.getElementById('buy-btn');
+        const sellBtn = document.getElementById('sell-btn');
+        const walletList = document.getElementById('wallet-list');
+        const destinationWallet = document.getElementById('destination-wallet');
+        const tokenHoldings = document.getElementById('token-holdings');
+        const recentTransactions = document.getElementById('recent-transactions');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const confirmation = document.getElementById('confirmation');
+        const confirmationTitle = document.getElementById('confirmation-title');
+        const confirmationDetails = document.getElementById('confirmation-details');
+        const tokenIdInput = document.getElementById('token-id');
+        const buyAmountInput = document.getElementById('buy-amount');
+        const sellAmountInput = document.getElementById('sell-amount');
+        const quickBtns = document.querySelectorAll('.quick-btn');
+        const totalBalanceEl = document.getElementById('total-balance');
+        
+        // App State
+        let currentPage = 'buy';
+        let selectedToken = null;
+        let selectedWallet = null;
+        
+        // Initialize the app
+        function initApp() {
+            // Check if we have existing data in localStorage
+            if (!localStorage.getItem('wallets')) {
+                generateWallets();
+            }
+            
+            if (!localStorage.getItem('tokens')) {
+                localStorage.setItem('tokens', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('transactions')) {
+                localStorage.setItem('transactions', JSON.stringify([]));
+            }
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('loggedIn')) {
+                showApp();
+            }
+        }
+        
+        // Generate random wallets with total around 290k
+        function generateWallets() {
+            // Generate 5 wallets with total around 290k
+            const wallets = [];
+            let total = 0;
+            
+            // Generate 4 wallets with balances between 50k and 90k
+            for (let i = 0; i < 4; i++) {
+                const balance = Math.floor(Math.random() * 40000) + 50000;
+                wallets.push({
+                    id: `wallet${i+1}`,
+                    name: ['Main Wallet', 'Trading Wallet', 'Savings Wallet', 'Investment Wallet'][i],
+                    balance: balance
+                });
+                total += balance;
+            }
+            
+            // Generate the last wallet to make total around 290k
+            const lastBalance = 290000 - total + Math.floor(Math.random() * 10000) - 5000;
+            wallets.push({
+                id: 'wallet5',
+                name: 'Secure Wallet',
+                balance: lastBalance < 40000 ? 38000 : lastBalance // Ensure one is below 40k
+            });
+            
+            // Adjust total to account for the last wallet
+            total += wallets[4].balance;
+            
+            // If total is not exactly 290k, adjust the first wallet
+            const difference = 290000 - total;
+            wallets[0].balance += difference;
+            
+            localStorage.setItem('wallets', JSON.stringify(wallets));
+            return wallets;
+        }
+        
+        // Get wallets from localStorage
+        function getWallets() {
+            return JSON.parse(localStorage.getItem('wallets'));
+        }
+        
+        // Get tokens from localStorage
+        function getTokens() {
+            return JSON.parse(localStorage.getItem('tokens'));
+        }
+        
+        // Get transactions from localStorage
+        function getTransactions() {
+            return JSON.parse(localStorage.getItem('transactions'));
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return '$' + amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        
+        // Calculate total balance
+        function calculateTotalBalance() {
+            const wallets = getWallets();
+            return wallets.reduce((total, wallet) => total + wallet.balance, 0);
+        }
+        
+        // Update total balance display
+        function updateTotalBalance() {
+            const total = calculateTotalBalance();
+            totalBalanceEl.textContent = formatCurrency(total);
+        }
+        
+        // Render wallets
+        function renderWallets() {
+            const wallets = getWallets();
+            walletList.innerHTML = '';
+            
+            wallets.forEach(wallet => {
+                const walletElement = document.createElement('div');
+                walletElement.className = 'wallet-card';
+                walletElement.dataset.id = wallet.id;
+                walletElement.innerHTML = `
+                    <div class="wallet-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="wallet-info">
+                        <div class="wallet-name">${wallet.name}</div>
+                        <div class="wallet-balance">${formatCurrency(wallet.balance)}</div>
+                    </div>
+                `;
+                
+                walletElement.addEventListener('click', () => {
+                    document.querySelectorAll('.wallet-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    walletElement.classList.add('active');
+                    selectedWallet = wallet.id;
+                });
+                
+                walletList.appendChild(walletElement);
+            });
+            
+            // Render for destination wallet dropdown
+            destinationWallet.innerHTML = '<option value="">Select a wallet</option>';
+            wallets.forEach(wallet => {
+                const option = document.createElement('option');
+                option.value = wallet.id;
+                option.textContent = `${wallet.name} - ${formatCurrency(wallet.balance)}`;
+                destinationWallet.appendChild(option);
+            });
+        }
+        
+        // Render token holdings
+        function renderTokenHoldings() {
+            const tokens = getTokens();
+            tokenHoldings.innerHTML = '';
+            
+            if (tokens.length === 0) {
+                tokenHoldings.innerHTML = '<p class="empty-message">You don\'t own any tokens yet</p>';
+                return;
+            }
+            
+            tokens.forEach(token => {
+                const tokenElement = document.createElement('div');
+                tokenElement.className = 'token-item';
+                tokenElement.dataset.id = token.id;
+                tokenElement.innerHTML = `
+                    <div class="token-icon">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                    <div class="token-info">
+                        <div class="token-name">${token.id.toUpperCase()}</div>
+                        <div class="token-amount">Amount: ${token.amount.toFixed(4)}</div>
+                    </div>
+                `;
+                
+                tokenElement.addEventListener('click', () => {
+                    document.querySelectorAll('.token-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    tokenElement.classList.add('active');
+                    selectedToken = token.id;
+                    
+                    // Enable sell controls
+                    sellAmountInput.disabled = false;
+                    destinationWallet.disabled = false;
+                    sellBtn.disabled = false;
+                    
+                    // Set max amount
+                    sellAmountInput.max = token.amount;
+                    sellAmountInput.placeholder = `Max: ${token.amount.toFixed(4)}`;
+                });
+                
+                tokenHoldings.appendChild(tokenElement);
+            });
+        }
+        
+        // Render recent transactions
+        function renderRecentTransactions() {
+            const transactions = getTransactions();
+            recentTransactions.innerHTML = '';
+            
+            if (transactions.length === 0) {
+                recentTransactions.innerHTML = '<p class="empty-message">No transactions yet</p>';
+                return;
+            }
+            
+            // Show last 3 transactions
+            const recent = transactions.slice(-3);
+            
+            recent.forEach(transaction => {
+                const transactionElement = document.createElement('div');
+                transactionElement.className = 'token-item';
+                transactionElement.innerHTML = `
+                    <div class="token-icon" style="background: ${transaction.type === 'buy' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'linear-gradient(135deg, var(--danger), #dc2626)'}">
+                        <i class="fas ${transaction.type === 'buy' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                    </div>
+                    <div class="token-info">
+                        <div class="token-name">${transaction.type === 'buy' ? 'Bought' : 'Sold'} ${transaction.token.toUpperCase()}</div>
+                        <div class="token-amount">Amount: ${transaction.amount} • Wallet: ${transaction.walletName}</div>
+                    </div>
+                `;
+                
+                recentTransactions.appendChild(transactionElement);
+            });
+        }
+        
+        // Show the app interface
+        function showApp() {
+            loginPage.style.display = 'none';
+            appContainer.style.display = 'block';
+            
+            // Render data
+            renderWallets();
+            renderTokenHoldings();
+            renderRecentTransactions();
+            updateTotalBalance();
+        }
+        
+        // Simulate WebAuthn biometric authentication
+        function authenticateWithBiometrics() {
+            return new Promise((resolve, reject) => {
+                loadingOverlay.classList.add('active');
+                confirmation.style.opacity = '0';
+                
+                setTimeout(() => {
+                    if (Math.random() < 0.8) {
+                        resolve();
+                    } else {
+                        reject(new Error('Biometric authentication failed'));
+                    }
+                }, 2000);
+            });
+        }
+        
+        // Simulate trade execution
+        function executeTrade(type, details) {
+            return new Promise((resolve) => {
+                loadingOverlay.classList.add('active');
+                confirmation.style.opacity = '0';
+                
+                setTimeout(() => {
+                    resolve();
+                }, 5000);
+            });
+        }
+        
+        // Handle login
+        function handleLogin() {
+            localStorage.setItem('loggedIn', 'true');
+            showApp();
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            localStorage.removeItem('loggedIn');
+            appContainer.style.display = 'none';
+            loginPage.style.display = 'flex';
+            
+            // Reset form
+            tokenIdInput.value = '';
+            buyAmountInput.value = '';
+            sellAmountInput.value = '';
+            selectedToken = null;
+            selectedWallet = null;
+        }
+        
+        // Handle buy token
+        function handleBuyToken() {
+            const tokenId = tokenIdInput.value.trim().toLowerCase();
+            const amount = parseFloat(buyAmountInput.value);
+            
+            if (!tokenId) {
+                alert('Please enter a token ID');
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            if (!selectedWallet) {
+                alert('Please select a wallet');
+                return;
+            }
+            
+            const wallets = getWallets();
+            const wallet = wallets.find(w => w.id === selectedWallet);
+            
+            if (wallet.balance < amount) {
+                alert('Insufficient funds in selected wallet');
+                return;
+            }
+            
+            // Execute trade
+            executeTrade('buy', { tokenId, amount, wallet })
+                .then(() => {
+                    // Update wallet balance
+                    wallet.balance -= amount;
+                    localStorage.setItem('wallets', JSON.stringify(wallets));
+                    
+                    // Add token to holdings
+                    const tokens = getTokens();
+                    const existingToken = tokens.find(t => t.id === tokenId);
+                    
+                    if (existingToken) {
+                        existingToken.amount += amount;
+                    } else {
+                        tokens.push({
+                            id: tokenId,
+                            amount: amount,
+                            purchasePrice: amount / amount
+                        });
+                    }
+                    
+                    localStorage.setItem('tokens', JSON.stringify(tokens));
+                    
+                    // Add transaction
+                    const transactions = getTransactions();
+                    transactions.push({
+                        id: Date.now(),
+                        type: 'buy',
+                        token: tokenId,
+                        amount: amount,
+                        walletId: selectedWallet,
+                        walletName: wallet.name,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+                    
+                    // Show confirmation
+                    confirmationTitle.textContent = 'Trade Confirmed!';
+                    confirmationDetails.textContent = `You bought $${amount} of ${tokenId.toUpperCase()}`;
+                    confirmation.style.opacity = '1';
+                    
+                    // Hide overlay after 3 seconds
+                    setTimeout(() => {
+                        loadingOverlay.classList.remove('active');
+                        
+                        // Reset form and update UI
+                        tokenIdInput.value = '';
+                        buyAmountInput.value = '';
+                        document.querySelectorAll('.wallet-card').forEach(card => {
+                            card.classList.remove('active');
+                        });
+                        selectedWallet = null;
+                        
+                        renderWallets();
+                        renderTokenHoldings();
+                        renderRecentTransactions();
+                        updateTotalBalance();
+                    }, 3000);
+                })
+                .catch(error => {
+                    alert(`Trade failed: ${error.message}`);
+                    loadingOverlay.classList.remove('active');
+                });
+        }
+        
+        // Handle sell token
+        function handleSellToken() {
+            const amount = parseFloat(sellAmountInput.value);
+            const walletId = destinationWallet.value;
+            
+            if (!selectedToken) {
+                alert('Please select a token to sell');
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            if (!walletId) {
+                alert('Please select a destination wallet');
+                return;
+            }
+            
+            const tokens = getTokens();
+            const token = tokens.find(t => t.id === selectedToken);
+            
+            if (token.amount < amount) {
+                alert(`You only have ${token.amount.toFixed(4)} of this token`);
+                return;
+            }
+            
+            const wallets = getWallets();
+            const wallet = wallets.find(w => w.id === walletId);
+            
+            // Execute trade
+            executeTrade('sell', { token, amount, wallet })
+                .then(() => {
+                    // Update token amount
+                    token.amount -= amount;
+                    
+                    // Remove token if amount is 0
+                    if (token.amount <= 0) {
+                        tokens.splice(tokens.indexOf(token), 1);
+                    }
+                    
+                    localStorage.setItem('tokens', JSON.stringify(tokens));
+                    
+                    // Update wallet balance
+                    wallet.balance += amount;
+                    localStorage.setItem('wallets', JSON.stringify(wallets));
+                    
+                    // Add transaction
+                    const transactions = getTransactions();
+                    transactions.push({
+                        id: Date.now(),
+                        type: 'sell',
+                        token: selectedToken,
+                        amount: amount,
+                        walletId: walletId,
+                        walletName: wallet.name,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    localStorage.setItem('transactions', JSON.stringify(transactions));
+                    
+                    // Show confirmation
+                    confirmationTitle.textContent = 'Sell Confirmed!';
+                    confirmationDetails.textContent = `You sold $${amount} of ${selectedToken.toUpperCase()}`;
+                    confirmation.style.opacity = '1';
+                    
+                    // Hide overlay after 3 seconds
+                    setTimeout(() => {
+                        loadingOverlay.classList.remove('active');
+                        
+                        // Reset form and update UI
+                        sellAmountInput.value = '';
+                        destinationWallet.value = '';
+                        document.querySelectorAll('.token-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        selectedToken = null;
+                        
+                        // Disable controls
+                        sellAmountInput.disabled = true;
+                        destinationWallet.disabled = true;
+                        sellBtn.disabled = true;
+                        
+                        renderWallets();
+                        renderTokenHoldings();
+                        renderRecentTransactions();
+                        updateTotalBalance();
+                    }, 3000);
+                })
+                .catch(error => {
+                    alert(`Trade failed: ${error.message}`);
+                    loadingOverlay.classList.remove('active');
+                });
+        }
+        
+        // Event Listeners
+        biometricBtn.addEventListener('click', () => {
+            authenticateWithBiometrics()
+                .then(() => {
+                    handleLogin();
+                })
+                .catch(error => {
+                    alert('Biometric authentication failed. Please use the form.');
+                });
+        });
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleLogin();
+        });
+        
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const page = tab.dataset.page;
+                
+                if (page) {
+                    // Update active tab
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show correct page
+                    if (page === 'buy') {
+                        buyPage.style.display = 'block';
+                        sellPage.style.display = 'none';
+                        currentPage = 'buy';
+                    } else if (page === 'sell') {
+                        buyPage.style.display = 'none';
+                        sellPage.style.display = 'block';
+                        currentPage = 'sell';
+                    }
+                } else if (tab.id === 'logout-btn') {
+                    handleLogout();
+                }
+            });
+        });
+        
+        logoutBtn.addEventListener('click', handleLogout);
+        buyBtn.addEventListener('click', handleBuyToken);
+        sellBtn.addEventListener('click', handleSellToken);
+        
+        quickBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!selectedToken) return;
+                
+                const percent = parseFloat(btn.dataset.percent) / 100;
+                const tokens = getTokens();
+                const token = tokens.find(t => t.id === selectedToken);
+                
+                if (token) {
+                    const amount = token.amount * percent;
+                    sellAmountInput.value = amount.toFixed(4);
+                }
+            });
+        });
+        
+        // Initialize the app
+        initApp();
+    </script>
+</body>
+</html>
