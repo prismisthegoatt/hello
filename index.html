@@ -3,563 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Trading Platform</title>
+    <title>CryptoBot Pro | Trading Simulator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.cryptohopper.com/widgets/js/script"></script>
     <style>
         :root {
             --primary: #2962ff;
             --primary-dark: #0039cb;
-            --secondary: #aa00ff;
-            --success: #00c853;
+            --secondary: #00c853;
             --danger: #ff1744;
             --warning: #ffab00;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #f1f5f9;
-            --lighter: #f8fafc;
-            --gray: #94a3b8;
-            --gray-dark: #64748b;
-            --card-bg: rgba(15, 23, 42, 0.85);
-            --card-border: rgba(148, 163, 184, 0.25);
-            --shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --dark: #121826;
+            --dark-light: #1e293b;
+            --darker: #0d1117;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --success: #00e676;
+            --profit: #00c853;
+            --loss: #ff5252;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            color: var(--light);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text);
             min-height: 100vh;
-            padding-bottom: 80px;
-            position: relative;
             overflow-x: hidden;
         }
 
-        #login-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            animation: fadeIn 1s ease;
-        }
-
-        #login-page::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(41, 98, 255, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            animation: pulse 8s infinite alternate;
-        }
-
-        .login-container {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 35px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transform: translateY(20px);
-            animation: slideUp 0.8s ease forwards;
-        }
-
-        .login-container::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .app-logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .app-logo i {
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-
-        .app-logo h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .biometric-login {
-            margin-bottom: 25px;
-        }
-
-        .biometric-btn {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 16px;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: var(--transition);
-            box-shadow: 0 5px 20px rgba(41, 98, 255, 0.3);
-        }
-
-        .biometric-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(41, 98, 255, 0.4);
-        }
-
-        .biometric-btn i {
-            font-size: 1.6rem;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 28px 0;
-            color: var(--gray);
-        }
-
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--card-border);
-        }
-
-        .divider span {
-            padding: 0 18px;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 22px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-            color: var(--gray);
-            font-size: 0.95rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 16px 18px;
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            background: rgba(15, 23, 42, 0.6);
-            color: var(--light);
-            font-size: 1.05rem;
-            transition: var(--transition);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(41, 98, 255, 0.2);
-        }
-
-        .login-btn {
-            background: linear-gradient(135deg, var(--secondary), #7b1fa2);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 16px;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 12px;
-            box-shadow: 0 5px 20px rgba(170, 0, 255, 0.3);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(170, 0, 255, 0.4);
-        }
-
-        #app-container {
-            display: none;
-            max-width: 520px;
-            margin: 0 auto;
-            position: relative;
-        }
-
+        /* App Header */
         .app-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 16px 22px;
+            background: rgba(18, 24, 38, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .app-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-tabs {
             display: flex;
-            gap: 6px;
-            background: rgba(30, 41, 59, 0.8);
-            border-radius: 50px;
-            padding: 6px;
+            align-items: center;
+            gap: 10px;
         }
 
-        .nav-tab {
-            padding: 9px 18px;
-            border-radius: 50px;
+        .app-title h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
 
-        .nav-tab.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+        .nav-btn.active {
+            background: rgba(41, 98, 255, 0.2);
+            color: var(--primary);
         }
 
-        .nav-tab:not(.active):hover {
-            background: rgba(148, 163, 184, 0.15);
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .total-balance {
-            text-align: center;
-            padding: 12px 22px;
-            background: rgba(15, 23, 42, 0.7);
-            border-bottom: 1px solid var(--card-border);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .balance-label {
-            font-size: 0.95rem;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-
-        .balance-amount {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
+        /* Page Content */
         .page-content {
-            padding: 22px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow);
-            animation: slideUp 0.5s ease;
-            transition: transform 0.3s ease;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        /* Wallet Selector */
+        .wallet-selector {
+            position: relative;
+            margin-bottom: 25px;
         }
 
-        .card-header {
+        .selected-wallet {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-icon i {
-            color: white;
-            font-size: 1.3rem;
-        }
-
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 18px center;
-            background-size: 14px;
-            padding-right: 45px;
-        }
-
-        .btn {
-            padding: 16px 22px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 5px 20px rgba(41, 98, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(41, 98, 255, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #009624);
-            color: white;
-            box-shadow: 0 5px 20px rgba(0, 200, 83, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #d50000);
-            color: white;
-            box-shadow: 0 5px 20px rgba(255, 23, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.4);
-        }
-
-        .wallet-card {
-            display: flex;
-            align-items: center;
-            padding: 18px;
-            background: rgba(15, 23, 42, 0.6);
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.5);
             border: 1px solid var(--card-border);
-            border-radius: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .wallet-card:hover {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: var(--primary);
-            transform: translateX(8px);
-        }
-
-        .wallet-card.active {
-            background: rgba(41, 98, 255, 0.15);
-            border-color: var(--primary);
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.25);
-        }
-
-        .wallet-icon {
-            width: 44px;
-            height: 44px;
             border-radius: 12px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 18px;
-        }
-
-        .wallet-icon i {
-            color: white;
-            font-size: 1.3rem;
+            cursor: pointer;
         }
 
         .wallet-info {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .wallet-name {
-            font-weight: 500;
-            margin-bottom: 6px;
-            font-size: 1.05rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
         .wallet-balance {
-            font-size: 0.95rem;
-            color: var(--success);
-            font-weight: 700;
-        }
-
-        .quick-actions {
-            display: flex;
-            gap: 12px;
-            margin: 18px 0;
-        }
-
-        .quick-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            color: var(--light);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .quick-btn:hover {
-            background: rgba(41, 98, 255, 0.15);
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .token-list {
-            max-height: 320px;
-            overflow-y: auto;
-            margin-top: 18px;
-        }
-
-        .token-item {
-            display: flex;
-            align-items: center;
-            padding: 18px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .token-item:hover {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: var(--primary);
-            transform: translateX(8px);
-        }
-
-        .token-item.active {
-            background: rgba(41, 98, 255, 0.15);
-            border-color: var(--primary);
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.25);
-        }
-
-        .token-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--warning), #ff6d00);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 18px;
-        }
-
-        .token-icon i {
-            color: white;
-        }
-
-        .token-info {
-            flex: 1;
-        }
-
-        .token-name {
-            font-weight: 500;
-            margin-bottom: 6px;
-            font-size: 1.05rem;
-        }
-
-        .token-amount {
-            font-size: 0.95rem;
-            color: var(--gray);
-            margin-bottom: 4px;
-        }
-
-        .token-price {
-            font-size: 0.95rem;
-            color: var(--success);
             font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 3px;
         }
 
+        .wallet-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--dark-light);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-top: 5px;
+            overflow: hidden;
+            z-index: 10;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .wallet-option {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .wallet-option:hover {
+            background: rgba(41, 98, 255, 0.1);
+        }
+
+        /* Trade Form */
+        .trade-form .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .amount-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .amount-btn {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amount-btn:hover {
+            background: rgba(41, 98, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .trade-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
+        }
+
+        .trade-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Loading Overlay */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(2, 6, 23, 0.95);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s;
         }
 
         .overlay.active {
@@ -567,1138 +286,811 @@
             pointer-events: all;
         }
 
-        .loader {
+        .loading-spinner {
             width: 70px;
             height: 70px;
-            border: 6px solid rgba(255, 255, 255, 0.1);
-            border-top: 6px solid var(--primary);
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            animation: spin 1.2s linear infinite;
-            margin-bottom: 25px;
-        }
-
-        .confirmation {
-            text-align: center;
-            opacity: 0;
-            transform: scale(0.8);
-            animation: confirm 0.6s forwards 0.3s;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 35px;
-            width: 92%;
-            max-width: 420px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .confirmation i {
-            font-size: 5.5rem;
-            background: linear-gradient(135deg, var(--success), #008c3a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
-            animation: pulseIcon 1.8s infinite;
-        }
-
-        .confirmation h2 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .confirmation p {
-            color: var(--gray);
-            font-size: 1.15rem;
-            margin-bottom: 25px;
-        }
-
-        .transaction-details {
-            background: rgba(15, 23, 42, 0.65);
-            border-radius: 14px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: left;
-            border-left: 5px solid var(--primary);
-            animation: fadeIn 0.6s ease;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .detail-label {
-            color: var(--gray);
-            font-size: 1.05rem;
-        }
-
-        .detail-value {
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .profit {
-            color: var(--success);
-        }
-
-        .loss {
-            color: var(--danger);
-        }
-
-        .confetti {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: confettiFall 5s ease-in-out forwards;
-        }
-        
-        /* Crypto widget styling */
-        .crypto-widget-container {
-            margin-top: 25px;
-            border-radius: 14px;
-            overflow: hidden;
-            animation: fadeIn 1.2s ease;
-        }
-        
-        .cryptohopper-web-widget {
-            background: transparent !important;
-            border: none !important;
-        }
-        
-        .cryptohopper-web-widget * {
-            color: var(--light) !important;
-            background: transparent !important;
-        }
-        
-        .cryptohopper-web-widget-header {
-            background: rgba(15, 23, 42, 0.85) !important;
-            border-bottom: 1px solid var(--card-border) !important;
-        }
-        
-        .cryptohopper-web-widget-table {
-            background: rgba(15, 23, 42, 0.6) !important;
-            border: 1px solid var(--card-border) !important;
-        }
-        
-        .ch-coin:hover {
-            background: rgba(41, 98, 255, 0.15) !important;
-        }
-        
-        /* PNL Popup */
-        .pnl-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 35px;
-            width: 92%;
-            max-width: 420px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s ease;
-        }
-        
-        .pnl-popup.active {
-            opacity: 1;
-            pointer-events: all;
-            animation: popupAppear 0.6s forwards;
-        }
-        
-        .pnl-popup h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .pnl-details {
-            background: rgba(15, 23, 42, 0.65);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 25px;
-            animation: fadeIn 0.6s ease;
-        }
-        
-        .pnl-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .pnl-buttons button {
-            flex: 1;
-            padding: 14px;
-            font-size: 1.05rem;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            100% { transform: scale(1.2); opacity: 0.8; }
+            animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        @keyframes confirm {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+        /* Confirmation */
+        .confirmation {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .confirmation.active {
+            transform: scale(1);
+            opacity: 1;
         }
 
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(0, 200, 83, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
         }
 
-        @keyframes pulseIcon {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .checkmark i {
+            font-size: 40px;
+            color: var(--success);
         }
 
-        @keyframes confettiFall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        
-        @keyframes popupAppear {
-            0% { transform: translate(-50%, -45%); opacity: 0; }
-            100% { transform: translate(-50%, -50%); opacity: 1; }
+        .confirmation h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
         }
 
+        .confirmation p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .ok-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ok-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Holdings */
+        .holdings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .holding-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .holding-item:hover {
+            transform: translateY(-2px);
+            background: rgba(41, 98, 255, 0.1);
+        }
+
+        .token-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .token-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .token-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .token-name {
+            font-weight: 600;
+        }
+
+        .token-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .token-value {
+            text-align: right;
+        }
+
+        .token-amount {
+            font-weight: 600;
+        }
+
+        .token-price {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        /* Profit/Loss Summary */
+        .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+        }
+
+        .summary-value {
+            font-weight: 600;
+        }
+
+        .profit {
+            color: var(--profit);
+        }
+
+        .loss {
+            color: var(--loss);
+        }
+
+        .net-value {
+            font-size: 1.2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+
+        .welcome-section h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
         @media (min-width: 768px) {
-            body {
-                padding: 25px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            .page-content {
+                padding: 30px;
             }
             
-            #login-page {
-                width: 100%;
-            }
-            
-            #app-container {
-                width: 100%;
-                max-width: 520px;
-                border-radius: 24px;
-                overflow: hidden;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            .app-header {
+                border-radius: 0 0 16px 16px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Login Page -->
-    <div id="login-page">
-        <div class="login-container">
-            <div class="app-logo">
-                <i class="fas fa-chart-line"></i>
-                <h1>ProTrader</h1>
-            </div>
-            
-            <div class="biometric-login">
-                <button id="biometric-btn" class="biometric-btn">
-                    <i class="fas fa-fingerprint"></i> Login with Biometrics
-                </button>
-            </div>
-            
-            <div class="divider">
-                <span>or continue with</span>
-            </div>
-            
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Enter your username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter your password">
-                </div>
-                
-                <button type="submit" class="login-btn">Sign In</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- App Container -->
-    <div id="app-container">
-        <!-- Sticky Header -->
+    <!-- Main App -->
+    <div id="appContainer">
         <header class="app-header">
-            <div class="app-title">ProTrader</div>
+            <div class="app-title">
+                <i class="fas fa-chart-line"></i>
+                <h1>CryptoBot Pro</h1>
+            </div>
             
-            <div class="nav-tabs">
-                <div class="nav-tab active" data-page="buy">Buy</div>
-                <div class="nav-tab" data-page="sell">Sell</div>
-                <div class="nav-tab" id="logout-btn">Logout</div>
+            <div class="nav-buttons">
+                <button id="buyBtn" class="nav-btn active">Buy</button>
+                <button id="sellBtn" class="nav-btn">Sell</button>
+            </div>
+            
+            <div class="total-balance">
+                <i class="fas fa-wallet"></i>
+                <span id="totalBalance">$289,156.00</span>
             </div>
         </header>
         
-        <!-- Total Balance Display -->
-        <div class="total-balance">
-            <div class="balance-label">Total Portfolio Value</div>
-            <div class="balance-amount" id="total-balance">$0.00</div>
+        <div class="welcome-section">
+            <h2>Crypto Trading Simulator</h2>
+            <p>Experience professional crypto trading with our realistic simulator. Practice buying and selling without real financial risk.</p>
         </div>
         
-        <!-- Page Content -->
         <div class="page-content">
             <!-- Buy Token Page -->
-            <div id="buy-page">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Buy Crypto Assets</div>
-                        <div class="card-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="token-id">Asset Symbol</label>
-                        <input type="text" id="token-id" class="form-control" placeholder="Enter asset symbol (e.g. BTC, ETH)">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="buy-amount">Amount to Buy (USD)</label>
-                        <input type="number" id="buy-amount" class="form-control" placeholder="Enter amount">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Select Funding Wallet</label>
-                        <div id="wallet-list">
-                            <!-- Wallets will be populated here -->
-                        </div>
-                    </div>
-                    
-                    <button id="buy-btn" class="btn btn-primary">Execute Trade</button>
-                </div>
-                
-                <!-- Live Crypto Prices Widget -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Real-Time Market Prices</div>
-                        <div class="card-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                    </div>
-                    <div class="crypto-widget-container">
-                        <div class="cryptohopper-web-widget" 
-                             data-id="2" 
-                             data-background_color="transparent" 
-                             data-coins="bitcoin,ethereum,tether,solana,cardano,ripple,dogecoin,polkadot">
-                        </div>
-                    </div>
-                </div>
+            <div id="buyPage">
+                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Buy Token</h2>
                 
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Recent Transactions</div>
-                        <div class="card-icon">
-                            <i class="fas fa-history"></i>
+                    <div class="wallet-selector">
+                        <div class="selected-wallet" id="selectedWallet">
+                            <div class="wallet-info">
+                                <div class="wallet-name">Select Wallet</div>
+                                <div class="wallet-balance">$0.00</div>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
                         </div>
+                        <div class="wallet-dropdown" id="walletDropdown"></div>
                     </div>
                     
-                    <div id="recent-transactions">
-                        <p class="empty-message">No transactions yet</p>
+                    <form id="buyForm" class="trade-form">
+                        <div class="form-group">
+                            <label for="tokenId">Token ID</label>
+                            <input type="text" id="tokenId" class="form-control" placeholder="e.g. BTC, ETH, SOL" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyAmount">Amount to Buy</label>
+                            <input type="number" id="buyAmount" class="form-control" placeholder="Enter amount" min="0.01" step="0.01" required>
+                        </div>
+                        
+                        <button type="submit" class="trade-btn">Execute Buy Order</button>
+                    </form>
+                </div>
+                
+                <h2 class="section-title"><i class="fas fa-coins"></i> Your Holdings</h2>
+                <div class="card">
+                    <div id="holdingsList" class="holdings-list">
+                        <!-- Holdings will be populated here -->
                     </div>
                 </div>
             </div>
             
             <!-- Sell Token Page -->
-            <div id="sell-page" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Your Asset Holdings</div>
-                        <div class="card-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                    </div>
-                    
-                    <div id="token-holdings">
-                        <p class="empty-message">You don't own any assets yet</p>
-                    </div>
-                </div>
+            <div id="sellPage" style="display: none;">
+                <h2 class="section-title"><i class="fas fa-cash-register"></i> Sell Token</h2>
                 
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Sell Assets</div>
-                        <div class="card-icon">
-                            <i class="fas fa-cash-register"></i>
+                    <div class="form-group">
+                        <label for="sellToken">Select Token to Sell</label>
+                        <select id="sellToken" class="form-control" required>
+                            <option value="">Select a token</option>
+                            <!-- Tokens will be populated here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sellAmount">Amount to Sell</label>
+                        <input type="number" id="sellAmount" class="form-control" placeholder="Enter amount" min="0.01" step="0.01" required>
+                        
+                        <div class="amount-controls">
+                            <div class="amount-btn" data-percent="25">25%</div>
+                            <div class="amount-btn" data-percent="50">50%</div>
+                            <div class="amount-btn" data-percent="75">75%</div>
+                            <div class="amount-btn" data-percent="100">100%</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="sell-amount">Amount to Sell</label>
-                        <input type="number" id="sell-amount" class="form-control" placeholder="Enter amount" disabled>
-                    </div>
-                    
-                    <div class="quick-actions">
-                        <button class="quick-btn" data-percent="25">25%</button>
-                        <button class="quick-btn" data-percent="50">50%</button>
-                        <button class="quick-btn" data-percent="75">75%</button>
-                        <button class="quick-btn" data-percent="100">100%</button>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="destination-wallet">Destination Wallet</label>
-                        <select id="destination-wallet" class="form-control" disabled>
-                            <option value="">Select a wallet</option>
+                        <label for="destinationWallet">Destination Wallet</label>
+                        <select id="destinationWallet" class="form-control" required>
                             <!-- Wallets will be populated here -->
                         </select>
                     </div>
                     
-                    <button id="sell-btn" class="btn btn-danger" disabled>Execute Sale</button>
+                    <button id="sellBtnAction" class="trade-btn">Execute Sell Order</button>
+                </div>
+                
+                <div id="summaryCard" class="summary-card" style="display: none;">
+                    <h3>Trade Summary</h3>
+                    <div class="summary-row">
+                        <div class="summary-label">Token</div>
+                        <div class="summary-value" id="summaryToken">BTC</div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-label">Bought For</div>
+                        <div class="summary-value" id="summaryBought">$0.00</div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-label">Sold For</div>
+                        <div class="summary-value" id="summarySold">$0.00</div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary-label">Net Result</div>
+                        <div class="summary-value net-value" id="summaryNet">$0.00</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Loading and Confirmation Overlay -->
-    <div class="overlay" id="loading-overlay">
-        <div class="loader"></div>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Confirmation Overlay -->
+    <div id="confirmationOverlay" class="overlay">
         <div class="confirmation" id="confirmation">
-            <i class="fas fa-check-circle"></i>
-            <h2 id="confirmation-title">Trade Confirmed!</h2>
-            <p id="confirmation-details">Your transaction was successful</p>
-            <div id="transaction-details"></div>
-            <button id="confirmation-ok" class="btn btn-primary">OK</button>
+            <div class="checkmark">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3>Trade Confirmed!</h3>
+            <p>Your transaction was successfully processed.</p>
+            <button class="ok-btn" id="okBtn">OK</button>
         </div>
     </div>
-    
-    <!-- PNL Popup -->
-    <div class="pnl-popup" id="pnl-popup">
-        <h2>Profit & Loss Statement</h2>
-        <div class="pnl-details" id="pnl-details">
-            <!-- PNL details will be populated here -->
-        </div>
-        <div class="pnl-buttons">
-            <button id="pnl-ok" class="btn btn-primary">OK</button>
-            <button id="view-pnl" class="btn btn-success">View Details</button>
-        </div>
-    </div>
-    
+
     <script>
-        // DOM Elements
-        const loginPage = document.getElementById('login-page');
-        const appContainer = document.getElementById('app-container');
-        const biometricBtn = document.getElementById('biometric-btn');
-        const loginForm = document.getElementById('login-form');
-        const navTabs = document.querySelectorAll('.nav-tab');
-        const buyPage = document.getElementById('buy-page');
-        const sellPage = document.getElementById('sell-page');
-        const logoutBtn = document.getElementById('logout-btn');
-        const buyBtn = document.getElementById('buy-btn');
-        const sellBtn = document.getElementById('sell-btn');
-        const walletList = document.getElementById('wallet-list');
-        const destinationWallet = document.getElementById('destination-wallet');
-        const tokenHoldings = document.getElementById('token-holdings');
-        const recentTransactions = document.getElementById('recent-transactions');
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const confirmation = document.getElementById('confirmation');
-        const confirmationTitle = document.getElementById('confirmation-title');
-        const confirmationDetails = document.getElementById('confirmation-details');
-        const transactionDetails = document.getElementById('transaction-details');
-        const confirmationOk = document.getElementById('confirmation-ok');
-        const tokenIdInput = document.getElementById('token-id');
-        const buyAmountInput = document.getElementById('buy-amount');
-        const sellAmountInput = document.getElementById('sell-amount');
-        const quickBtns = document.querySelectorAll('.quick-btn');
-        const totalBalanceEl = document.getElementById('total-balance');
-        const pnlPopup = document.getElementById('pnl-popup');
-        const pnlDetails = document.getElementById('pnl-details');
-        const pnlOk = document.getElementById('pnl-ok');
-        const viewPnl = document.getElementById('view-pnl');
-        
-        // App State
-        let currentPage = 'buy';
-        let selectedToken = null;
-        let selectedWallet = null;
-        let lastTransaction = null;
-        
         // Initialize the app
-        function initApp() {
-            // Check if we have existing data in localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize wallets if not exists
             if (!localStorage.getItem('wallets')) {
-                generateWallets();
+                initializeWallets();
             }
             
-            if (!localStorage.getItem('tokens')) {
-                localStorage.setItem('tokens', JSON.stringify([]));
+            // Initialize holdings if not exists
+            if (!localStorage.getItem('holdings')) {
+                localStorage.setItem('holdings', JSON.stringify([]));
             }
             
-            if (!localStorage.getItem('transactions')) {
-                localStorage.setItem('transactions', JSON.stringify([]));
-            }
+            // Start the app
+            showApp();
             
-            // Check if user is already logged in
-            if (localStorage.getItem('loggedIn')) {
-                showApp();
-            }
-        }
+            // Setup event listeners
+            setupEventListeners();
+        });
         
-        // Generate random wallets with total around 290k
-        function generateWallets() {
+        // Initialize wallets with total balance of $289,156
+        function initializeWallets() {
             const wallets = [
-                { id: 'wallet1', name: 'Primary Wallet', balance: 134847 },
-                { id: 'wallet2', name: 'Trading Wallet', balance: 75892 },
-                { id: 'wallet3', name: 'Savings Wallet', balance: 42536 },
-                { id: 'wallet4', name: 'Investment Wallet', balance: 26319 },
-                { id: 'wallet5', name: 'Secure Wallet', balance: 10406 }
+                { id: 1, name: "Main Wallet", balance: 120000.00 },
+                { id: 2, name: "Trading Wallet", balance: 89156.00 },
+                { id: 3, name: "Savings Wallet", balance: 50000.00 },
+                { id: 4, name: "Investment Wallet", balance: 25000.00 },
+                { id: 5, name: "Mobile Wallet", balance: 5000.00 } // Under $40,000
             ];
-            
             localStorage.setItem('wallets', JSON.stringify(wallets));
-            return wallets;
         }
         
-        // Get wallets from localStorage
-        function getWallets() {
-            return JSON.parse(localStorage.getItem('wallets'));
-        }
-        
-        // Get tokens from localStorage
-        function getTokens() {
-            return JSON.parse(localStorage.getItem('tokens'));
-        }
-        
-        // Get transactions from localStorage
-        function getTransactions() {
-            return JSON.parse(localStorage.getItem('transactions'));
-        }
-        
-        // Format currency
-        function formatCurrency(amount) {
-            return '$' + amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-        
-        // Calculate total balance
-        function calculateTotalBalance() {
-            const wallets = getWallets();
-            const tokens = getTokens();
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Navigation
+            document.getElementById('buyBtn').addEventListener('click', function() {
+                showPage('buy');
+            });
             
-            // Calculate wallet balances
-            const walletTotal = wallets.reduce((total, wallet) => total + wallet.balance, 0);
+            document.getElementById('sellBtn').addEventListener('click', function() {
+                showPage('sell');
+                populateSellTokens();
+                populateDestinationWallets();
+            });
             
-            // Calculate token values
-            const tokenTotal = tokens.reduce((total, token) => {
-                return total + (token.amount * token.currentPrice);
-            }, 0);
+            // Wallet selector
+            document.getElementById('selectedWallet').addEventListener('click', toggleWalletDropdown);
             
-            return walletTotal + tokenTotal;
+            // Buy form
+            document.getElementById('buyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                executeBuy();
+            });
+            
+            // Sell form
+            document.getElementById('sellBtnAction').addEventListener('click', executeSell);
+            
+            // Percentage buttons
+            document.querySelectorAll('.amount-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const percent = parseFloat(this.getAttribute('data-percent')) / 100;
+                    setSellAmount(percent);
+                });
+            });
+            
+            // Confirmation OK button
+            document.getElementById('okBtn').addEventListener('click', hideConfirmation);
+        }
+        
+        // Show main app
+        function showApp() {
+            updateTotalBalance();
+            populateWalletDropdown();
+            loadHoldings();
+        }
+        
+        // Show page (buy or sell)
+        function showPage(page) {
+            document.getElementById('buyPage').style.display = page === 'buy' ? 'block' : 'none';
+            document.getElementById('sellPage').style.display = page === 'sell' ? 'block' : 'none';
+            
+            // Update active button
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(page + 'Btn').classList.add('active');
+        }
+        
+        // Toggle wallet dropdown
+        function toggleWalletDropdown() {
+            const dropdown = document.getElementById('walletDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // Populate wallet dropdown
+        function populateWalletDropdown() {
+            const wallets = JSON.parse(localStorage.getItem('wallets'));
+            const dropdown = document.getElementById('walletDropdown');
+            dropdown.innerHTML = '';
+            
+            wallets.forEach(wallet => {
+                const option = document.createElement('div');
+                option.className = 'wallet-option';
+                option.dataset.id = wallet.id;
+                option.innerHTML = `
+                    <div>${wallet.name}</div>
+                    <div class="wallet-balance">$${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                `;
+                
+                option.addEventListener('click', function() {
+                    selectWallet(wallet.id);
+                });
+                
+                dropdown.appendChild(option);
+            });
+        }
+        
+        // Select a wallet
+        function selectWallet(walletId) {
+            const wallets = JSON.parse(localStorage.getItem('wallets'));
+            const wallet = wallets.find(w => w.id == walletId);
+            
+            if (wallet) {
+                document.getElementById('selectedWallet').innerHTML = `
+                    <div class="wallet-info">
+                        <div class="wallet-name">${wallet.name}</div>
+                        <div class="wallet-balance">$${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                `;
+                
+                // Reattach event listener
+                document.getElementById('selectedWallet').addEventListener('click', toggleWalletDropdown);
+                
+                // Close dropdown
+                document.getElementById('walletDropdown').style.display = 'none';
+            }
         }
         
         // Update total balance display
         function updateTotalBalance() {
-            const total = calculateTotalBalance();
-            totalBalanceEl.textContent = formatCurrency(total);
+            const wallets = JSON.parse(localStorage.getItem('wallets'));
+            const total = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
+            document.getElementById('totalBalance').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         }
         
-        // Create confetti effect
-        function createConfetti() {
-            const colors = ['#2962ff', '#aa00ff', '#00c853', '#ffab00', '#ff1744'];
-            const container = document.querySelector('.overlay');
-            
-            for (let i = 0; i < 120; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = (Math.random() * 12 + 6) + 'px';
-                confetti.style.height = confetti.style.width;
-                container.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 5000);
-            }
-        }
-        
-        // Render wallets
-        function renderWallets() {
-            const wallets = getWallets();
-            walletList.innerHTML = '';
-            
-            wallets.forEach(wallet => {
-                const walletElement = document.createElement('div');
-                walletElement.className = 'wallet-card';
-                walletElement.dataset.id = wallet.id;
-                walletElement.innerHTML = `
-                    <div class="wallet-icon">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <div class="wallet-info">
-                        <div class="wallet-name">${wallet.name}</div>
-                        <div class="wallet-balance">${formatCurrency(wallet.balance)}</div>
-                    </div>
-                `;
-                
-                walletElement.addEventListener('click', () => {
-                    document.querySelectorAll('.wallet-card').forEach(card => {
-                        card.classList.remove('active');
-                    });
-                    walletElement.classList.add('active');
-                    selectedWallet = wallet.id;
-                });
-                
-                walletList.appendChild(walletElement);
-            });
-            
-            // Render for destination wallet dropdown
-            destinationWallet.innerHTML = '<option value="">Select a wallet</option>';
-            wallets.forEach(wallet => {
-                const option = document.createElement('option');
-                option.value = wallet.id;
-                option.textContent = `${wallet.name} - ${formatCurrency(wallet.balance)}`;
-                destinationWallet.appendChild(option);
-            });
-        }
-        
-        // Calculate realistic current price based on market fluctuations
-        function calculateCurrentPrice(purchasePrice, daysHeld) {
-            // More realistic price fluctuations based on time held and market volatility
-            const baseVolatility = 0.02; // 2% daily volatility
-            const timeFactor = Math.min(daysHeld / 30, 1); // Cap at 30 days
-            
-            // Simulate price movement with random walk
-            let currentPrice = purchasePrice;
-            for (let i = 0; i < daysHeld; i++) {
-                // Random price change between -2% to +3%
-                const change = (Math.random() * 0.05 - 0.02) * baseVolatility * timeFactor;
-                currentPrice *= (1 + change);
-            }
-            
-            // Ensure price doesn't go below 50% or above 200% of purchase price
-            currentPrice = Math.max(purchasePrice * 0.5, Math.min(purchasePrice * 2, currentPrice));
-            
-            return currentPrice;
-        }
-        
-        // Render token holdings with realistic pricing
-        function renderTokenHoldings() {
-            const tokens = getTokens();
-            tokenHoldings.innerHTML = '';
-            
-            if (tokens.length === 0) {
-                tokenHoldings.innerHTML = '<p class="empty-message">You don\'t own any assets yet</p>';
-                return;
-            }
-            
-            tokens.forEach(token => {
-                // Calculate days held
-                const purchaseDate = new Date(token.purchaseDate);
-                const daysHeld = Math.floor((new Date() - purchaseDate) / (1000 * 60 * 60 * 24));
-                
-                // Calculate current price based on realistic market fluctuations
-                token.currentPrice = calculateCurrentPrice(token.purchasePrice, daysHeld);
-                
-                const tokenElement = document.createElement('div');
-                tokenElement.className = 'token-item';
-                tokenElement.dataset.id = token.id;
-                
-                // Calculate profit percentage
-                const profitPercent = ((token.currentPrice - token.purchasePrice) / token.purchasePrice * 100).toFixed(2);
-                const isProfit = token.currentPrice > token.purchasePrice;
-                const profitClass = isProfit ? 'profit' : 'loss';
-                
-                tokenElement.innerHTML = `
-                    <div class="token-icon">
-                        <i class="fab fa-bitcoin"></i>
-                    </div>
-                    <div class="token-info">
-                        <div class="token-name">${token.id.toUpperCase()}</div>
-                        <div class="token-amount">Holding: ${token.amount.toFixed(4)}</div>
-                        <div class="token-price">Value: ${formatCurrency(token.amount * token.currentPrice)}</div>
-                        <div class="token-price">P/L: <span class="${profitClass}">${profitPercent}%</span></div>
-                    </div>
-                `;
-                
-                tokenElement.addEventListener('click', () => {
-                    document.querySelectorAll('.token-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    tokenElement.classList.add('active');
-                    selectedToken = token.id;
-                    
-                    // Enable sell controls
-                    sellAmountInput.disabled = false;
-                    destinationWallet.disabled = false;
-                    sellBtn.disabled = false;
-                    
-                    // Set max amount
-                    sellAmountInput.max = token.amount;
-                    sellAmountInput.placeholder = `Max: ${token.amount.toFixed(4)}`;
-                });
-                
-                tokenHoldings.appendChild(tokenElement);
-            });
-            
-            // Save updated tokens with current prices
-            localStorage.setItem('tokens', JSON.stringify(tokens));
-        }
-        
-        // Render recent transactions
-        function renderRecentTransactions() {
-            const transactions = getTransactions();
-            recentTransactions.innerHTML = '';
-            
-            if (transactions.length === 0) {
-                recentTransactions.innerHTML = '<p class="empty-message">No transactions yet</p>';
-                return;
-            }
-            
-            // Show last 3 transactions
-            const recent = transactions.slice(-3);
-            
-            recent.forEach(transaction => {
-                const transactionElement = document.createElement('div');
-                transactionElement.className = 'token-item';
-                
-                let details = '';
-                if (transaction.profit !== undefined) {
-                    details = `<div class="token-price">P/L: <span class="${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</span></div>`;
-                }
-                
-                transactionElement.innerHTML = `
-                    <div class="token-icon" style="background: ${transaction.type === 'buy' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'linear-gradient(135deg, var(--danger), #d50000)'}">
-                        <i class="fas ${transaction.type === 'buy' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
-                    </div>
-                    <div class="token-info">
-                        <div class="token-name">${transaction.type === 'buy' ? 'Bought' : 'Sold'} ${transaction.token.toUpperCase()}</div>
-                        <div class="token-amount">Amount: ${transaction.amount} • Wallet: ${transaction.walletName}</div>
-                        ${details}
-                    </div>
-                `;
-                
-                recentTransactions.appendChild(transactionElement);
-            });
-        }
-        
-        // Show PNL popup with realistic profit/loss
-        function showPnlPopup(transaction) {
-            lastTransaction = transaction;
-            pnlDetails.innerHTML = `
-                <div class="detail-row">
-                    <div class="detail-label">Asset</div>
-                    <div class="detail-value">${transaction.token.toUpperCase()}</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Amount Sold</div>
-                    <div class="detail-value">${transaction.amount}</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Holding Period</div>
-                    <div class="detail-value">${transaction.daysHeld} days</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Avg Purchase Price</div>
-                    <div class="detail-value">${formatCurrency(transaction.purchasePrice)}</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Selling Price</div>
-                    <div class="detail-value">${formatCurrency(transaction.sellingPrice)}</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Profit/Loss</div>
-                    <div class="detail-value ${transaction.profit >= 0 ? 'profit' : 'loss'}">${formatCurrency(transaction.profit)}</div>
-                </div>
-            `;
-            
-            pnlPopup.classList.add('active');
-        }
-        
-        // Show the app interface
-        function showApp() {
-            loginPage.style.display = 'none';
-            appContainer.style.display = 'block';
-            
-            // Render data
-            renderWallets();
-            renderTokenHoldings();
-            renderRecentTransactions();
-            updateTotalBalance();
-        }
-        
-        // Simulate WebAuthn biometric authentication
-        function authenticateWithBiometrics() {
-            return new Promise((resolve, reject) => {
-                loadingOverlay.classList.add('active');
-                confirmation.style.opacity = '0';
-                
-                setTimeout(() => {
-                    if (Math.random() < 0.85) {
-                        resolve();
-                    } else {
-                        reject(new Error('Biometric authentication failed'));
-                    }
-                }, 2000);
-            });
-        }
-        
-        // Simulate trade execution
-        function executeTrade(type, details) {
-            return new Promise((resolve) => {
-                loadingOverlay.classList.add('active');
-                confirmation.style.opacity = '0';
-                
-                setTimeout(() => {
-                    resolve();
-                }, 5000);
-            });
-        }
-        
-        // Handle login
-        function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === 'mohamedruzain' && password === '20071205ruzain') {
-                localStorage.setItem('loggedIn', 'true');
-                showApp();
-            } else {
-                alert('Invalid credentials. Please try again.');
-            }
-        }
-        
-        // Handle logout
-        function handleLogout() {
-            localStorage.removeItem('loggedIn');
-            appContainer.style.display = 'none';
-            loginPage.style.display = 'flex';
-            
-            // Reset form
-            tokenIdInput.value = '';
-            buyAmountInput.value = '';
-            sellAmountInput.value = '';
-            selectedToken = null;
-            selectedWallet = null;
-            
-            // Clear login form
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-        
-        // Handle buy token
-        function handleBuyToken() {
-            const tokenId = tokenIdInput.value.trim().toLowerCase();
-            const amount = parseFloat(buyAmountInput.value);
+        // Execute buy order
+        function executeBuy() {
+            const tokenId = document.getElementById('tokenId').value.trim().toUpperCase();
+            const amount = parseFloat(document.getElementById('buyAmount').value);
             
             if (!tokenId) {
-                alert('Please enter an asset symbol');
+                alert('Please enter a token ID');
                 return;
             }
             
-            if (!amount || amount <= 0) {
+            if (isNaN(amount)) {
                 alert('Please enter a valid amount');
                 return;
             }
             
-            if (!selectedWallet) {
-                alert('Please select a funding wallet');
+            // Get selected wallet
+            const walletInfo = document.querySelector('.wallet-info');
+            if (!walletInfo || !walletInfo.querySelector('.wallet-balance')) {
+                alert('Please select a wallet');
                 return;
             }
             
-            const wallets = getWallets();
-            const wallet = wallets.find(w => w.id === selectedWallet);
+            const walletName = walletInfo.querySelector('.wallet-name').textContent;
+            const walletBalance = parseFloat(walletInfo.querySelector('.wallet-balance').textContent.replace(/[^0-9.-]+/g, ""));
             
-            if (wallet.balance < amount) {
+            // Generate random price between $10 and $10,000
+            const buyPrice = Math.random() * (10000 - 10) + 10;
+            const cost = amount * buyPrice;
+            
+            if (cost > walletBalance) {
                 alert('Insufficient funds in selected wallet');
                 return;
             }
             
-            // Execute trade
-            executeTrade('buy', { tokenId, amount, wallet })
-                .then(() => {
-                    // Update wallet balance
-                    wallet.balance -= amount;
+            // Show loading
+            showLoading();
+            
+            // Simulate trade execution
+            setTimeout(() => {
+                // Update wallet balance
+                const wallets = JSON.parse(localStorage.getItem('wallets'));
+                const wallet = wallets.find(w => w.name === walletName);
+                if (wallet) {
+                    wallet.balance -= cost;
                     localStorage.setItem('wallets', JSON.stringify(wallets));
+                    updateTotalBalance();
                     
-                    // Add token to holdings
-                    const tokens = getTokens();
-                    const existingToken = tokens.find(t => t.id === tokenId);
-                    
-                    // Calculate purchase price (with simulated fees)
-                    const purchasePrice = amount * (0.995 + Math.random() * 0.005);
-                    
-                    if (existingToken) {
-                        // Recalculate average purchase price
-                        const totalAmount = existingToken.amount + amount;
-                        existingToken.purchasePrice = (existingToken.purchasePrice * existingToken.amount + purchasePrice) / totalAmount;
-                        existingToken.amount = totalAmount;
-                        existingToken.purchaseDate = new Date().toISOString();
-                    } else {
-                        tokens.push({
-                            id: tokenId,
-                            amount: amount,
-                            purchasePrice: purchasePrice,
-                            purchaseDate: new Date().toISOString()
-                        });
-                    }
-                    
-                    localStorage.setItem('tokens', JSON.stringify(tokens));
-                    
-                    // Add transaction
-                    const transactions = getTransactions();
-                    transactions.push({
-                        id: Date.now(),
-                        type: 'buy',
-                        token: tokenId,
-                        amount: amount,
-                        walletId: selectedWallet,
-                        walletName: wallet.name,
-                        timestamp: new Date().toISOString()
+                    // Create holding
+                    const holdings = JSON.parse(localStorage.getItem('holdings'));
+                    holdings.push({
+                        tokenId,
+                        amount,
+                        buyPrice,
+                        buyTime: new Date().toISOString(),
+                        wallet: wallet.name
                     });
+                    localStorage.setItem('holdings', JSON.stringify(holdings));
                     
-                    localStorage.setItem('transactions', JSON.stringify(transactions));
+                    // Update UI
+                    loadHoldings();
                     
                     // Show confirmation
-                    confirmationTitle.textContent = 'Purchase Confirmed!';
-                    confirmationDetails.textContent = `You bought $${amount} of ${tokenId.toUpperCase()}`;
-                    transactionDetails.innerHTML = '';
-                    confirmation.style.opacity = '1';
-                    createConfetti();
-                    
-                    // Hide overlay after 3 seconds or when OK is clicked
-                    confirmationOk.onclick = () => {
-                        loadingOverlay.classList.remove('active');
-                        
-                        // Reset form and update UI
-                        tokenIdInput.value = '';
-                        buyAmountInput.value = '';
-                        document.querySelectorAll('.wallet-card').forEach(card => {
-                            card.classList.remove('active');
-                        });
-                        selectedWallet = null;
-                        
-                        renderWallets();
-                        renderTokenHoldings();
-                        renderRecentTransactions();
-                        updateTotalBalance();
-                    };
-                })
-                .catch(error => {
-                    alert(`Trade failed: ${error.message}`);
-                    loadingOverlay.classList.remove('active');
-                });
+                    hideLoading();
+                    showConfirmation();
+                }
+            }, 2000);
         }
         
-        // Handle sell token with realistic profit/loss
-        function handleSellToken() {
-            const amount = parseFloat(sellAmountInput.value);
-            const walletId = destinationWallet.value;
+        // Populate sell tokens dropdown
+        function populateSellTokens() {
+            const holdings = JSON.parse(localStorage.getItem('holdings'));
+            const select = document.getElementById('sellToken');
+            select.innerHTML = '<option value="">Select a token</option>';
             
-            if (!selectedToken) {
-                alert('Please select an asset to sell');
+            const tokenMap = new Map();
+            holdings.forEach(holding => {
+                if (tokenMap.has(holding.tokenId)) {
+                    tokenMap.set(holding.tokenId, tokenMap.get(holding.tokenId) + holding.amount);
+                } else {
+                    tokenMap.set(holding.tokenId, holding.amount);
+                }
+            });
+            
+            tokenMap.forEach((amount, tokenId) => {
+                const option = document.createElement('option');
+                option.value = tokenId;
+                option.textContent = `${tokenId} (${amount.toFixed(2)})`;
+                select.appendChild(option);
+            });
+        }
+        
+        // Populate destination wallets
+        function populateDestinationWallets() {
+            const wallets = JSON.parse(localStorage.getItem('wallets'));
+            const select = document.getElementById('destinationWallet');
+            select.innerHTML = '';
+            
+            wallets.forEach(wallet => {
+                const option = document.createElement('option');
+                option.value = wallet.id;
+                option.textContent = `${wallet.name} ($${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+                select.appendChild(option);
+            });
+        }
+        
+        // Set sell amount based on percentage
+        function setSellAmount(percent) {
+            const tokenId = document.getElementById('sellToken').value;
+            if (!tokenId) {
+                alert('Please select a token first');
                 return;
             }
             
-            if (!amount || amount <= 0) {
+            const holdings = JSON.parse(localStorage.getItem('holdings'));
+            const tokenHoldings = holdings.filter(h => h.tokenId === tokenId);
+            const totalAmount = tokenHoldings.reduce((sum, holding) => sum + holding.amount, 0);
+            
+            document.getElementById('sellAmount').value = (totalAmount * percent).toFixed(2);
+        }
+        
+        // Execute sell order
+        function executeSell() {
+            const tokenId = document.getElementById('sellToken').value;
+            const amount = parseFloat(document.getElementById('sellAmount').value);
+            const destWalletId = document.getElementById('destinationWallet').value;
+            
+            if (!tokenId) {
+                alert('Please select a token to sell');
+                return;
+            }
+            
+            if (isNaN(amount)) {
                 alert('Please enter a valid amount');
                 return;
             }
             
-            if (!walletId) {
+            if (!destWalletId) {
                 alert('Please select a destination wallet');
                 return;
             }
             
-            const tokens = getTokens();
-            const token = tokens.find(t => t.id === selectedToken);
+            // Get holdings for this token
+            const holdings = JSON.parse(localStorage.getItem('holdings'));
+            const tokenHoldings = holdings.filter(h => h.tokenId === tokenId);
             
-            if (token.amount < amount) {
-                alert(`You only have ${token.amount.toFixed(4)} of this asset`);
+            // Calculate total amount held
+            const totalAmount = tokenHoldings.reduce((sum, holding) => sum + holding.amount, 0);
+            
+            if (amount > totalAmount) {
+                alert(`You only have ${totalAmount.toFixed(2)} ${tokenId} to sell`);
                 return;
             }
             
-            const wallets = getWallets();
-            const wallet = wallets.find(w => w.id === walletId);
+            // Calculate average buy price
+            const totalValue = tokenHoldings.reduce((sum, holding) => sum + (holding.amount * holding.buyPrice), 0);
+            const avgBuyPrice = totalValue / totalAmount;
             
-            // Calculate days held
-            const purchaseDate = new Date(token.purchaseDate);
-            const daysHeld = Math.floor((new Date() - purchaseDate) / (1000 * 60 * 60 * 24));
+            // Generate random sell price (within ±30% of buy price)
+            const variation = (Math.random() * 0.6) - 0.3; // -30% to +30%
+            const sellPrice = avgBuyPrice * (1 + variation);
             
-            // Calculate selling price with realistic market fluctuations
-            const sellingPrice = calculateCurrentPrice(token.purchasePrice, daysHeld);
-            const sellingAmount = amount * sellingPrice;
-            const purchaseAmount = amount * token.purchasePrice;
-            const profit = sellingAmount - purchaseAmount;
+            // Calculate proceeds and profit/loss
+            const proceeds = amount * sellPrice;
+            const costBasis = amount * avgBuyPrice;
+            const netResult = proceeds - costBasis;
             
-            // Execute trade
-            executeTrade('sell', { token, amount, wallet })
-                .then(() => {
-                    // Update token amount
-                    token.amount -= amount;
+            // Show loading
+            showLoading();
+            
+            // Simulate trade execution
+            setTimeout(() => {
+                // Update holdings
+                let remaining = amount;
+                const newHoldings = holdings.filter(holding => {
+                    if (holding.tokenId !== tokenId) return true;
                     
-                    // Remove token if amount is 0
-                    if (token.amount <= 0) {
-                        tokens.splice(tokens.indexOf(token), 1);
+                    if (remaining > 0) {
+                        if (holding.amount <= remaining) {
+                            remaining -= holding.amount;
+                            return false; // Remove this holding
+                        } else {
+                            holding.amount -= remaining;
+                            remaining = 0;
+                            return true; // Keep with reduced amount
+                        }
                     }
-                    
-                    localStorage.setItem('tokens', JSON.stringify(tokens));
-                    
-                    // Update wallet balance
-                    wallet.balance += sellingAmount;
-                    localStorage.setItem('wallets', JSON.stringify(wallets));
-                    
-                    // Add transaction
-                    const transactions = getTransactions();
-                    const transaction = {
-                        id: Date.now(),
-                        type: 'sell',
-                        token: selectedToken,
-                        amount: amount,
-                        walletId: walletId,
-                        walletName: wallet.name,
-                        sellingPrice: sellingPrice,
-                        purchasePrice: token.purchasePrice,
-                        profit: profit,
-                        daysHeld: daysHeld,
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    transactions.push(transaction);
-                    localStorage.setItem('transactions', JSON.stringify(transactions));
-                    
-                    // Show confirmation
-                    confirmationTitle.textContent = 'Sale Confirmed!';
-                    confirmationDetails.textContent = `You sold $${amount} of ${selectedToken.toUpperCase()}`;
-                    transactionDetails.innerHTML = '';
-                    confirmation.style.opacity = '1';
-                    createConfetti();
-                    
-                    // Hide overlay when OK is clicked and show PNL popup
-                    confirmationOk.onclick = () => {
-                        loadingOverlay.classList.remove('active');
-                        showPnlPopup(transaction);
-                    };
-                })
-                .catch(error => {
-                    alert(`Trade failed: ${error.message}`);
-                    loadingOverlay.classList.remove('active');
+                    return true;
                 });
+                
+                localStorage.setItem('holdings', JSON.stringify(newHoldings));
+                
+                // Update destination wallet
+                const wallets = JSON.parse(localStorage.getItem('wallets'));
+                const destWallet = wallets.find(w => w.id == destWalletId);
+                if (destWallet) {
+                    destWallet.balance += proceeds;
+                    localStorage.setItem('wallets', JSON.stringify(wallets));
+                    updateTotalBalance();
+                }
+                
+                // Update UI
+                loadHoldings();
+                
+                // Hide loading and show confirmation
+                hideLoading();
+                
+                // Show trade summary
+                document.getElementById('summaryCard').style.display = 'block';
+                document.getElementById('summaryToken').textContent = tokenId;
+                document.getElementById('summaryBought').textContent = `$${costBasis.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('summarySold').textContent = `$${proceeds.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                
+                const netElem = document.getElementById('summaryNet');
+                netElem.textContent = `$${Math.abs(netResult).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                netElem.className = netResult >= 0 ? 'summary-value net-value profit' : 'summary-value net-value loss';
+                netElem.innerHTML = (netResult >= 0 ? '+' : '-') + netElem.innerHTML;
+                
+                showConfirmation();
+            }, 2000);
         }
         
-        // Event Listeners
-        biometricBtn.addEventListener('click', () => {
-            authenticateWithBiometrics()
-                .then(() => {
-                    handleLogin();
-                })
-                .catch(error => {
-                    alert('Biometric authentication failed. Please use the form.');
-                });
-        });
-        
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            handleLogin();
-        });
-        
-        navTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const page = tab.dataset.page;
-                
-                if (page) {
-                    // Update active tab
-                    navTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // Show correct page
-                    if (page === 'buy') {
-                        buyPage.style.display = 'block';
-                        sellPage.style.display = 'none';
-                        currentPage = 'buy';
-                    } else if (page === 'sell') {
-                        buyPage.style.display = 'none';
-                        sellPage.style.display = 'block';
-                        currentPage = 'sell';
-                        renderTokenHoldings();
-                    }
-                } else if (tab.id === 'logout-btn') {
-                    handleLogout();
+        // Load holdings
+        function loadHoldings() {
+            const holdings = JSON.parse(localStorage.getItem('holdings'));
+            const holdingsList = document.getElementById('holdingsList');
+            holdingsList.innerHTML = '';
+            
+            // Group holdings by token
+            const grouped = {};
+            holdings.forEach(holding => {
+                if (!grouped[holding.tokenId]) {
+                    grouped[holding.tokenId] = {
+                        amount: 0,
+                        totalValue: 0
+                    };
                 }
+                grouped[holding.tokenId].amount += holding.amount;
+                grouped[holding.tokenId].totalValue += holding.amount * holding.buyPrice;
             });
-        });
-        
-        logoutBtn.addEventListener('click', handleLogout);
-        buyBtn.addEventListener('click', handleBuyToken);
-        sellBtn.addEventListener('click', handleSellToken);
-        
-        quickBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (!selectedToken) return;
+            
+            // Create list items
+            Object.keys(grouped).forEach(tokenId => {
+                const holding = grouped[tokenId];
+                const avgPrice = holding.totalValue / holding.amount;
                 
-                const percent = parseFloat(btn.dataset.percent) / 100;
-                const tokens = getTokens();
-                const token = tokens.find(t => t.id === selectedToken);
+                const holdingItem = document.createElement('div');
+                holdingItem.className = 'holding-item';
+                holdingItem.innerHTML = `
+                    <div class="token-info">
+                        <div class="token-icon">${tokenId.substring(0, 2)}</div>
+                        <div class="token-details">
+                            <div class="token-name">${tokenId}</div>
+                            <div class="token-meta">Avg: $${avgPrice.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="token-value">
+                        <div class="token-amount">${holding.amount.toFixed(2)}</div>
+                        <div class="token-price">$${(holding.amount * avgPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                `;
                 
-                if (token) {
-                    const amount = token.amount * percent;
-                    sellAmountInput.value = amount.toFixed(4);
-                }
+                holdingsList.appendChild(holdingItem);
             });
-        });
-        
-        confirmationOk.addEventListener('click', () => {
-            loadingOverlay.classList.remove('active');
-        });
-        
-        pnlOk.addEventListener('click', () => {
-            pnlPopup.classList.remove('active');
             
-            // Reset form and update UI
-            sellAmountInput.value = '';
-            destinationWallet.value = '';
-            document.querySelectorAll('.token-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            selectedToken = null;
-            
-            // Disable controls
-            sellAmountInput.disabled = true;
-            destinationWallet.disabled = true;
-            sellBtn.disabled = true;
-            
-            renderWallets();
-            renderTokenHoldings();
-            renderRecentTransactions();
-            updateTotalBalance();
-        });
-        
-        viewPnl.addEventListener('click', () => {
-            if (lastTransaction) {
-                // For demo purposes, we'll just show the same popup again
-                showPnlPopup(lastTransaction);
+            if (Object.keys(grouped).length === 0) {
+                holdingsList.innerHTML = '<div class="empty-state">No holdings yet. Buy some tokens to get started!</div>';
             }
-        });
+        }
         
-        // Initialize the app
-        initApp();
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        // Show confirmation overlay
+        function showConfirmation() {
+            document.getElementById('confirmation').classList.add('active');
+            document.getElementById('confirmationOverlay').classList.add('active');
+        }
+        
+        // Hide confirmation overlay
+        function hideConfirmation() {
+            document.getElementById('confirmation').classList.remove('active');
+            document.getElementById('confirmationOverlay').classList.remove('active');
+            resetFormFields();
+        }
+        
+        // Reset form fields
+        function resetFormFields() {
+            document.getElementById('tokenId').value = '';
+            document.getElementById('buyAmount').value = '';
+            document.getElementById('sellToken').selectedIndex = 0;
+            document.getElementById('sellAmount').value = '';
+            document.getElementById('destinationWallet').selectedIndex = 0;
+            document.getElementById('summaryCard').style.display = 'none';
+        }
     </script>
 </body>
 </html>
