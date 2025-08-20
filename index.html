@@ -3,1094 +3,1211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoBot Pro | Trading Simulator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Call App Simulation</title>
     <style>
         :root {
-            --primary: #2962ff;
-            --primary-dark: #0039cb;
-            --secondary: #00c853;
-            --danger: #ff1744;
-            --warning: #ffab00;
-            --dark: #121826;
-            --dark-light: #1e293b;
-            --darker: #0d1117;
-            --text: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.8);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --success: #00e676;
-            --profit: #00c853;
-            --loss: #ff5252;
+            --primary-color: #007AFF;
+            --secondary-color: #5856D6;
+            --background-color: #F2F2F7;
+            --card-color: #FFFFFF;
+            --text-color: #000000;
+            --subtext-color: #8E8E93;
+            --danger-color: #FF3B30;
+            --success-color: #34C759;
+            --border-radius: 10px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #000000;
+            --card-color: #1C1C1E;
+            --text-color: #FFFFFF;
+            --subtext-color: #8E8E8E;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* App Header */
-        .app-header {
-            background: rgba(18, 24, 38, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+        .app-container {
+            max-width: 400px;
+            margin: 0 auto;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            position: sticky;
-            top: 0;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            padding: 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            background-color: var(--card-color);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 70px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--card-color);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
 
-        .app-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .app-title h1 {
-            font-size: 1.5rem;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .nav-btn {
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            padding: 8px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn.active {
-            background: rgba(41, 98, 255, 0.2);
-            color: var(--primary);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .total-balance {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Page Content */
-        .page-content {
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            color: var(--primary);
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Wallet Selector */
-        .wallet-selector {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .selected-wallet {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .wallet-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .wallet-name {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .wallet-balance {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-top: 3px;
-        }
-
-        .wallet-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--dark-light);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            margin-top: 5px;
-            overflow: hidden;
-            z-index: 10;
-            display: none;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .wallet-option {
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .wallet-option:hover {
-            background: rgba(41, 98, 255, 0.1);
-        }
-
-        /* Trade Form */
-        .trade-form .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .amount-controls {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .amount-btn {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 10px;
+        .tab {
+            padding: 12px 0;
             text-align: center;
-            font-size: 0.9rem;
+            flex: 1;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--transition);
         }
 
-        .amount-btn:hover {
-            background: rgba(41, 98, 255, 0.2);
-            border-color: var(--primary);
+        .tab.active {
+            color: var(--primary-color);
         }
 
-        .trade-btn {
-            background: var(--primary);
+        .tab i {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .tab-label {
+            font-size: 12px;
+        }
+
+        .contact-list, .call-log-list, .favorites-list {
+            list-style: none;
+        }
+
+        .contact-item, .call-log-item, .favorite-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: var(--card-color);
+            margin-bottom: 8px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-avatar, .call-log-avatar, .favorite-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .contact-info, .call-log-info, .favorite-info {
+            flex: 1;
+        }
+
+        .contact-name, .call-log-name, .favorite-name {
+            font-weight: 500;
+        }
+
+        .contact-handle, .call-log-details, .favorite-handle {
+            font-size: 14px;
+            color: var(--subtext-color);
+        }
+
+        .call-log-time {
+            font-size: 14px;
+            color: var(--subtext-color);
+        }
+
+        .search-bar {
+            padding: 12px 16px;
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-input {
             width: 100%;
-            font-size: 1.1rem;
-            font-weight: 700;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .dial-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .dial-key {
+            background-color: var(--card-color);
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 500;
+            box-shadow: var(--shadow);
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
+            transition: var(--transition);
         }
 
-        .trade-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
+        .dial-key:active {
+            transform: scale(0.95);
         }
 
-        /* Loading Overlay */
-        .overlay {
+        .dial-input {
+            padding: 16px;
+            text-align: center;
+            font-size: 24px;
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .call-button {
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .call-screen {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-color);
+            z-index: 1000;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            transform: translateY(100%);
+        }
+
+        .call-screen.active {
+            transform: translateY(0);
+        }
+
+        .caller-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .caller-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .caller-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .caller-handle, .call-status {
+            font-size: 16px;
+            color: var(--subtext-color);
+        }
+
+        .call-timer {
+            font-size: 32px;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .call-controls {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .control-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .control-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .end-call {
+            background-color: var(--danger-color);
+        }
+
+        .settings-item {
+            padding: 16px;
+            background-color: var(--card-color);
+            margin-bottom: 8px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .conference-participants {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .participant {
+            margin: 8px;
+            text-align: center;
+        }
+
+        .participant-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--subtext-color);
+            background-color: var(--card-color);
+            color: var(--text-color);
+        }
+
+        .button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .button.danger {
+            background-color: var(--danger-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transition: var(--transition);
         }
 
-        .overlay.active {
+        .modal.active {
             opacity: 1;
             pointer-events: all;
         }
 
-        .loading-spinner {
-            width: 70px;
-            height: 70px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .modal-content {
+            background-color: var(--card-color);
+            padding: 24px;
+            border-radius: var(--border-radius);
+            width: 80%;
+            max-width: 400px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .modal-title {
+            margin-bottom: 16px;
         }
 
-        /* Confirmation */
-        .confirmation {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            max-width: 350px;
-            width: 90%;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .confirmation.active {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(0, 200, 83, 0.1);
+        .modal-buttons {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px;
+            justify-content: flex-end;
+            margin-top: 16px;
         }
 
-        .checkmark i {
-            font-size: 40px;
-            color: var(--success);
+        .modal-button {
+            margin-left: 12px;
         }
 
-        .confirmation h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .confirmation p {
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-        }
-
-        .ok-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ok-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Holdings */
-        .holdings-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .holding-item {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .holding-item:hover {
-            transform: translateY(-2px);
-            background: rgba(41, 98, 255, 0.1);
-        }
-
-        .token-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .token-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .token-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .token-name {
-            font-weight: 600;
-        }
-
-        .token-meta {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 3px;
-        }
-
-        .token-value {
-            text-align: right;
-        }
-
-        .token-amount {
-            font-weight: 600;
-        }
-
-        .token-price {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 3px;
-        }
-
-        /* Profit/Loss Summary */
-        .summary-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .summary-label {
-            color: var(--text-secondary);
-        }
-
-        .summary-value {
-            font-weight: 600;
-        }
-
-        .profit {
-            color: var(--profit);
-        }
-
-        .loss {
-            color: var(--loss);
-        }
-
-        .net-value {
-            font-size: 1.2rem;
-        }
-
-        /* Welcome Section */
-        .welcome-section {
-            text-align: center;
-            margin: 30px 0;
-            padding: 0 20px;
-        }
-
-        .welcome-section h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .welcome-section p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Responsive Design */
-        @media (min-width: 768px) {
-            .page-content {
-                padding: 30px;
-            }
-            
-            .app-header {
-                border-radius: 0 0 16px 16px;
-            }
+        .favorite-icon {
+            color: gold;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <!-- Main App -->
-    <div id="appContainer">
-        <header class="app-header">
-            <div class="app-title">
-                <i class="fas fa-chart-line"></i>
-                <h1>CryptoBot Pro</h1>
-            </div>
-            
-            <div class="nav-buttons">
-                <button id="buyBtn" class="nav-btn active">Buy</button>
-                <button id="sellBtn" class="nav-btn">Sell</button>
-            </div>
-            
-            <div class="total-balance">
-                <i class="fas fa-wallet"></i>
-                <span id="totalBalance">$289,156.00</span>
-            </div>
-        </header>
+    <div class="app-container">
+        <div class="header" id="header">Contacts</div>
         
-        <div class="welcome-section">
-            <h2>Crypto Trading Simulator</h2>
-            <p>Experience professional crypto trading with our realistic simulator. Practice buying and selling without real financial risk.</p>
+        <div class="content">
+            <!-- Contacts Tab -->
+            <div class="tab-content" id="contacts-tab">
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="contact-search" placeholder="Search contacts...">
+                </div>
+                <ul class="contact-list" id="contact-list">
+                    <!-- Contacts will be populated here -->
+                </ul>
+            </div>
+            
+            <!-- Recents Tab -->
+            <div class="tab-content hidden" id="recents-tab">
+                <div class="filter-buttons">
+                    <button class="filter-button active" data-filter="all">All</button>
+                    <button class="filter-button" data-filter="missed">Missed</button>
+                    <button class="filter-button" data-filter="outgoing">Outgoing</button>
+                </div>
+                <ul class="call-log-list" id="call-log-list">
+                    <!-- Call logs will be populated here -->
+                </ul>
+            </div>
+            
+            <!-- Keypad Tab -->
+            <div class="tab-content hidden" id="keypad-tab">
+                <div class="dial-input" id="dial-input"></div>
+                <div class="dial-pad">
+                    <div class="dial-key" data-key="1">1</div>
+                    <div class="dial-key" data-key="2">2</div>
+                    <div class="dial-key" data-key="3">3</div>
+                    <div class="dial-key" data-key="4">4</div>
+                    <div class="dial-key" data-key="5">5</div>
+                    <div class="dial-key" data-key="6">6</div>
+                    <div class="dial-key" data-key="7">7</div>
+                    <div class="dial-key" data-key="8">8</div>
+                    <div class="dial-key" data-key="9">9</div>
+                    <div class="dial-key" data-key="*">*</div>
+                    <div class="dial-key" data-key="0">0</div>
+                    <div class="dial-key" data-key="#">#</div>
+                </div>
+                <div class="call-button" id="dial-call-button">
+                    <!-- Call icon -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.487 17.14L16.422 13.917C16.052 13.643 15.53 13.692 15.218 14.029L13.279 16.168C10.954 14.857 9.134 13.037 7.822 10.711L9.961 8.781C10.299 8.469 10.347 7.947 10.073 7.576L6.85 3.512C6.575 3.141 6.05 3.086 5.704 3.392L3.394 5.343C2.928 5.74 2.678 6.308 2.711 6.9C2.911 9.576 4.079 12.148 6.044 14.314C8.009 16.48 10.691 18.166 13.7 19.089C14.291 19.268 14.916 19.216 15.463 18.94L17.608 16.841C17.972 16.565 18.015 16.042 17.71 15.698" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Favorites Tab -->
+            <div class="tab-content hidden" id="favorites-tab">
+                <ul class="favorites-list" id="favorites-list">
+                    <!-- Favorites will be populated here -->
+                </ul>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content hidden" id="settings-tab">
+                <div class="settings-item">
+                    <span>Dark Mode</span>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-item" id="clear-call-logs">
+                    <span>Clear Call Logs</span>
+                    <span>></span>
+                </div>
+                <div class="settings-item" id="clear-contacts">
+                    <span>Clear Contacts</span>
+                    <span>></span>
+                </div>
+            </div>
+            
+            <!-- Add Contact Form -->
+            <div class="tab-content hidden" id="add-contact-tab">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="contact-handle" placeholder="@handle">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="contact-name" placeholder="Display Name">
+                </div>
+                <div class="form-group">
+                    <input type="tel" class="form-input" id="contact-phone" placeholder="Phone Number">
+                </div>
+                <button class="button" id="save-contact">Save Contact</button>
+            </div>
         </div>
         
-        <div class="page-content">
-            <!-- Buy Token Page -->
-            <div id="buyPage">
-                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Buy Token</h2>
-                
-                <div class="card">
-                    <div class="wallet-selector">
-                        <div class="selected-wallet" id="selectedWallet">
-                            <div class="wallet-info">
-                                <div class="wallet-name">Select Wallet</div>
-                                <div class="wallet-balance">$0.00</div>
-                            </div>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="wallet-dropdown" id="walletDropdown"></div>
-                    </div>
-                    
-                    <form id="buyForm" class="trade-form">
-                        <div class="form-group">
-                            <label for="tokenId">Token ID</label>
-                            <input type="text" id="tokenId" class="form-control" placeholder="e.g. BTC, ETH, SOL" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="buyAmount">Amount to Buy</label>
-                            <input type="number" id="buyAmount" class="form-control" placeholder="Enter amount" min="0.01" step="0.01" required>
-                        </div>
-                        
-                        <button type="submit" class="trade-btn">Execute Buy Order</button>
-                    </form>
-                </div>
-                
-                <h2 class="section-title"><i class="fas fa-coins"></i> Your Holdings</h2>
-                <div class="card">
-                    <div id="holdingsList" class="holdings-list">
-                        <!-- Holdings will be populated here -->
-                    </div>
-                </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="contacts">
+                <div>👤</div>
+                <div class="tab-label">Contacts</div>
+            </div>
+            <div class="tab" data-tab="recents">
+                <div>🕒</div>
+                <div class="tab-label">Recents</div>
+                <span class="badge hidden" id="missed-call-badge">0</span>
+            </div>
+            <div class="tab" data-tab="keypad">
+                <div>🔢</div>
+                <div class="tab-label">Keypad</div>
+            </div>
+            <div class="tab" data-tab="favorites">
+                <div>⭐</div>
+                <div class="tab-label">Favorites</div>
+            </div>
+            <div class="tab" data-tab="settings">
+                <div>⚙️</div>
+                <div class="tab-label">Settings</div>
+            </div>
+        </div>
+        
+        <!-- Call Screen -->
+        <div class="call-screen" id="call-screen">
+            <div class="caller-info">
+                <div class="caller-avatar" id="caller-avatar">JD</div>
+                <div class="caller-name" id="caller-name">John Doe</div>
+                <div class="caller-handle" id="caller-handle">@johndoe</div>
+                <div class="call-status" id="call-status">Ringing...</div>
+                <div class="call-timer hidden" id="call-timer">00:00</div>
             </div>
             
-            <!-- Sell Token Page -->
-            <div id="sellPage" style="display: none;">
-                <h2 class="section-title"><i class="fas fa-cash-register"></i> Sell Token</h2>
-                
-                <div class="card">
-                    <div class="form-group">
-                        <label for="sellToken">Select Token to Sell</label>
-                        <select id="sellToken" class="form-control" required>
-                            <option value="">Select a token</option>
-                            <!-- Tokens will be populated here -->
-                        </select>
+            <div class="conference-participants" id="conference-participants">
+                <!-- Conference participants will be added here -->
+            </div>
+            
+            <div class="call-controls">
+                <div class="control-button">
+                    <div class="control-circle" id="mute-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.5 8.5C15.5 8.5 16.5 9.5 16.5 11.5C16.5 13.5 15.5 14.5 15.5 14.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 6C18 6 20 8 20 11.5C20 15 18 17 18 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5.5 9.5H3.5C2.94772 9.5 2.5 9.94772 2.5 10.5V12.5C2.5 13.0523 2.94772 13.5 3.5 13.5H5.5L9.5 17.5V5.5L5.5 9.5Z" fill="white"/>
+                        </svg>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="sellAmount">Amount to Sell</label>
-                        <input type="number" id="sellAmount" class="form-control" placeholder="Enter amount" min="0.01" step="0.01" required>
-                        
-                        <div class="amount-controls">
-                            <div class="amount-btn" data-percent="25">25%</div>
-                            <div class="amount-btn" data-percent="50">50%</div>
-                            <div class="amount-btn" data-percent="75">75%</div>
-                            <div class="amount-btn" data-percent="100">100%</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="destinationWallet">Destination Wallet</label>
-                        <select id="destinationWallet" class="form-control" required>
-                            <!-- Wallets will be populated here -->
-                        </select>
-                    </div>
-                    
-                    <button id="sellBtnAction" class="trade-btn">Execute Sell Order</button>
+                    <span>Mute</span>
                 </div>
-                
-                <div id="summaryCard" class="summary-card" style="display: none;">
-                    <h3>Trade Summary</h3>
-                    <div class="summary-row">
-                        <div class="summary-label">Token</div>
-                        <div class="summary-value" id="summaryToken">BTC</div>
+                <div class="control-button">
+                    <div class="control-circle" id="speaker-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 14C19.1046 14 20 13.1046 20 12C20 10.8954 19.1046 10 18 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19.9999 17C21.6537 17 23.0744 15.8658 23.4002 14.2857C23.4786 13.9182 23.4787 13.082 23.4002 12.7143C23.0744 11.1342 21.6537 10 19.9999 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 15H4C3.44772 15 3 14.5523 3 14V10C3 9.44772 3.44772 9 4 9H6L10 5V19L6 15Z" fill="white"/>
+                        </svg>
                     </div>
-                    <div class="summary-row">
-                        <div class="summary-label">Bought For</div>
-                        <div class="summary-value" id="summaryBought">$0.00</div>
+                    <span>Speaker</span>
+                </div>
+                <div class="control-button">
+                    <div class="control-circle" id="add-call-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 3V7M19 5H13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 10C16 11.5913 15.3679 13.1174 14.2426 14.2426C13.1174 15.3679 11.5913 16 10 16C8.4087 16 6.88258 15.3679 5.75736 14.2426C4.63214 13.1174 4 11.5913 4 10C4 8.4087 4.63214 6.88258 5.75736 5.75736C6.88258 4.63214 8.4087 4 10 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 10C16 12.1217 16.8429 14.1566 18.3431 15.6569C19.8434 17.1571 21.8783 18 24 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 14C16 14.7956 16.3161 15.5587 16.8787 16.1213C17.4413 16.6839 18.2044 17 19 17C19.7956 17 20.5587 16.6839 21.1213 16.1213C21.6839 15.5587 22 14.7956 22 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
-                    <div class="summary-row">
-                        <div class="summary-label">Sold For</div>
-                        <div class="summary-value" id="summarySold">$0.00</div>
+                    <span>Add Call</span>
+                </div>
+                <div class="control-button">
+                    <div class="control-circle end-call" id="end-call-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 5L19 19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M19 5L5 19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                    <div class="summary-row">
-                        <div class="summary-label">Net Result</div>
-                        <div class="summary-value net-value" id="summaryNet">$0.00</div>
-                    </div>
+                    <span>End</span>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="overlay">
-        <div class="loading-spinner"></div>
-    </div>
-    
-    <!-- Confirmation Overlay -->
-    <div id="confirmationOverlay" class="overlay">
-        <div class="confirmation" id="confirmation">
-            <div class="checkmark">
-                <i class="fas fa-check"></i>
+        
+        <!-- Confirmation Modal -->
+        <div class="modal" id="confirmation-modal">
+            <div class="modal-content">
+                <h3 class="modal-title" id="modal-title">Confirm Action</h3>
+                <p id="modal-message">Are you sure you want to perform this action?</p>
+                <div class="modal-buttons">
+                    <button class="button" id="modal-cancel">Cancel</button>
+                    <button class="button danger" id="modal-confirm">Confirm</button>
+                </div>
             </div>
-            <h3>Trade Confirmed!</h3>
-            <p>Your transaction was successfully processed.</p>
-            <button class="ok-btn" id="okBtn">OK</button>
         </div>
     </div>
 
     <script>
+        // App State
+        const state = {
+            currentTab: 'contacts',
+            currentCall: null,
+            callTimer: null,
+            callTime: 0,
+            conferenceParticipants: [],
+            missedCalls: 0
+        };
+
+        // DOM Elements
+        const elements = {
+            header: document.getElementById('header'),
+            tabContents: document.querySelectorAll('.tab-content'),
+            tabs: document.querySelectorAll('.tab'),
+            contactList: document.getElementById('contact-list'),
+            callLogList: document.getElementById('call-log-list'),
+            favoritesList: document.getElementById('favorites-list'),
+            contactSearch: document.getElementById('contact-search'),
+            dialInput: document.getElementById('dial-input'),
+            dialCallButton: document.getElementById('dial-call-button'),
+            callScreen: document.getElementById('call-screen'),
+            callerAvatar: document.getElementById('caller-avatar'),
+            callerName: document.getElementById('caller-name'),
+            callerHandle: document.getElementById('caller-handle'),
+            callStatus: document.getElementById('call-status'),
+            callTimer: document.getElementById('call-timer'),
+            conferenceParticipants: document.getElementById('conference-participants'),
+            muteButton: document.getElementById('mute-button'),
+            speakerButton: document.getElementById('speaker-button'),
+            addCallButton: document.getElementById('add-call-button'),
+            endCallButton: document.getElementById('end-call-button'),
+            darkModeToggle: document.getElementById('dark-mode-toggle'),
+            clearCallLogs: document.getElementById('clear-call-logs'),
+            clearContacts: document.getElementById('clear-contacts'),
+            contactHandle: document.getElementById('contact-handle'),
+            contactName: document.getElementById('contact-name'),
+            contactPhone: document.getElementById('contact-phone'),
+            saveContact: document.getElementById('save-contact'),
+            confirmationModal: document.getElementById('confirmation-modal'),
+            modalTitle: document.getElementById('modal-title'),
+            modalMessage: document.getElementById('modal-message'),
+            modalCancel: document.getElementById('modal-cancel'),
+            modalConfirm: document.getElementById('modal-confirm'),
+            missedCallBadge: document.getElementById('missed-call-badge')
+        };
+
         // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize wallets if not exists
-            if (!localStorage.getItem('wallets')) {
-                initializeWallets();
-            }
+        function initApp() {
+            // Load data from localStorage
+            loadData();
             
-            // Initialize holdings if not exists
-            if (!localStorage.getItem('holdings')) {
-                localStorage.setItem('holdings', JSON.stringify([]));
-            }
-            
-            // Start the app
-            showApp();
-            
-            // Setup event listeners
+            // Set up event listeners
             setupEventListeners();
-        });
-        
-        // Initialize wallets with total balance of $289,156
-        function initializeWallets() {
-            const wallets = [
-                { id: 1, name: "Main Wallet", balance: 120000.00 },
-                { id: 2, name: "Trading Wallet", balance: 89156.00 },
-                { id: 3, name: "Savings Wallet", balance: 50000.00 },
-                { id: 4, name: "Investment Wallet", balance: 25000.00 },
-                { id: 5, name: "Mobile Wallet", balance: 5000.00 } // Under $40,000
-            ];
-            localStorage.setItem('wallets', JSON.stringify(wallets));
+            
+            // Render initial data
+            renderContacts();
+            renderCallLogs();
+            renderFavorites();
+            updateMissedCallBadge();
+            
+            // Apply saved theme
+            applyTheme();
         }
-        
-        // Setup all event listeners
+
+        // Load data from localStorage
+        function loadData() {
+            // Initialize default data if not exists
+            if (!localStorage.getItem('contacts')) {
+                const defaultContacts = [
+                    { handle: '@alex', name: 'Alex Johnson', phone: '555-1234', favorite: true },
+                    { handle: '@sarah', name: 'Sarah Miller', phone: '555-5678', favorite: false },
+                    { handle: '@mike', name: 'Mike Wilson', phone: '555-9012', favorite: true }
+                ];
+                localStorage.setItem('contacts', JSON.stringify(defaultContacts));
+            }
+            
+            if (!localStorage.getItem('callLogs')) {
+                localStorage.setItem('callLogs', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('settings')) {
+                localStorage.setItem('settings', JSON.stringify({ darkMode: false }));
+            }
+        }
+
+        // Set up event listeners
         function setupEventListeners() {
-            // Navigation
-            document.getElementById('buyBtn').addEventListener('click', function() {
-                showPage('buy');
-            });
-            
-            document.getElementById('sellBtn').addEventListener('click', function() {
-                showPage('sell');
-                populateSellTokens();
-                populateDestinationWallets();
-            });
-            
-            // Wallet selector
-            document.getElementById('selectedWallet').addEventListener('click', toggleWalletDropdown);
-            
-            // Buy form
-            document.getElementById('buyForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                executeBuy();
-            });
-            
-            // Sell form
-            document.getElementById('sellBtnAction').addEventListener('click', executeSell);
-            
-            // Percentage buttons
-            document.querySelectorAll('.amount-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const percent = parseFloat(this.getAttribute('data-percent')) / 100;
-                    setSellAmount(percent);
+            // Tab navigation
+            elements.tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
                 });
             });
             
-            // Confirmation OK button
-            document.getElementById('okBtn').addEventListener('click', hideConfirmation);
-        }
-        
-        // Show main app
-        function showApp() {
-            updateTotalBalance();
-            populateWalletDropdown();
-            loadHoldings();
-        }
-        
-        // Show page (buy or sell)
-        function showPage(page) {
-            document.getElementById('buyPage').style.display = page === 'buy' ? 'block' : 'none';
-            document.getElementById('sellPage').style.display = page === 'sell' ? 'block' : 'none';
+            // Contact search
+            elements.contactSearch.addEventListener('input', () => {
+                renderContacts();
+            });
             
-            // Update active button
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(page + 'Btn').classList.add('active');
-        }
-        
-        // Toggle wallet dropdown
-        function toggleWalletDropdown() {
-            const dropdown = document.getElementById('walletDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-        
-        // Populate wallet dropdown
-        function populateWalletDropdown() {
-            const wallets = JSON.parse(localStorage.getItem('wallets'));
-            const dropdown = document.getElementById('walletDropdown');
-            dropdown.innerHTML = '';
-            
-            wallets.forEach(wallet => {
-                const option = document.createElement('div');
-                option.className = 'wallet-option';
-                option.dataset.id = wallet.id;
-                option.innerHTML = `
-                    <div>${wallet.name}</div>
-                    <div class="wallet-balance">$${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                `;
-                
-                option.addEventListener('click', function() {
-                    selectWallet(wallet.id);
+            // Dial pad
+            document.querySelectorAll('.dial-key').forEach(key => {
+                key.addEventListener('click', () => {
+                    const currentInput = elements.dialInput.textContent;
+                    elements.dialInput.textContent = currentInput + key.dataset.key;
                 });
-                
-                dropdown.appendChild(option);
-            });
-        }
-        
-        // Select a wallet
-        function selectWallet(walletId) {
-            const wallets = JSON.parse(localStorage.getItem('wallets'));
-            const wallet = wallets.find(w => w.id == walletId);
-            
-            if (wallet) {
-                document.getElementById('selectedWallet').innerHTML = `
-                    <div class="wallet-info">
-                        <div class="wallet-name">${wallet.name}</div>
-                        <div class="wallet-balance">$${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                    </div>
-                    <i class="fas fa-chevron-down"></i>
-                `;
-                
-                // Reattach event listener
-                document.getElementById('selectedWallet').addEventListener('click', toggleWalletDropdown);
-                
-                // Close dropdown
-                document.getElementById('walletDropdown').style.display = 'none';
-            }
-        }
-        
-        // Update total balance display
-        function updateTotalBalance() {
-            const wallets = JSON.parse(localStorage.getItem('wallets'));
-            const total = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
-            document.getElementById('totalBalance').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        }
-        
-        // Execute buy order
-        function executeBuy() {
-            const tokenId = document.getElementById('tokenId').value.trim().toUpperCase();
-            const amount = parseFloat(document.getElementById('buyAmount').value);
-            
-            if (!tokenId) {
-                alert('Please enter a token ID');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Please enter a valid amount');
-                return;
-            }
-            
-            // Get selected wallet
-            const walletInfo = document.querySelector('.wallet-info');
-            if (!walletInfo || !walletInfo.querySelector('.wallet-balance')) {
-                alert('Please select a wallet');
-                return;
-            }
-            
-            const walletName = walletInfo.querySelector('.wallet-name').textContent;
-            const walletBalance = parseFloat(walletInfo.querySelector('.wallet-balance').textContent.replace(/[^0-9.-]+/g, ""));
-            
-            // Generate random price between $10 and $10,000
-            const buyPrice = Math.random() * (10000 - 10) + 10;
-            const cost = amount * buyPrice;
-            
-            if (cost > walletBalance) {
-                alert('Insufficient funds in selected wallet');
-                return;
-            }
-            
-            // Show loading
-            showLoading();
-            
-            // Simulate trade execution
-            setTimeout(() => {
-                // Update wallet balance
-                const wallets = JSON.parse(localStorage.getItem('wallets'));
-                const wallet = wallets.find(w => w.name === walletName);
-                if (wallet) {
-                    wallet.balance -= cost;
-                    localStorage.setItem('wallets', JSON.stringify(wallets));
-                    updateTotalBalance();
-                    
-                    // Create holding
-                    const holdings = JSON.parse(localStorage.getItem('holdings'));
-                    holdings.push({
-                        tokenId,
-                        amount,
-                        buyPrice,
-                        buyTime: new Date().toISOString(),
-                        wallet: wallet.name
-                    });
-                    localStorage.setItem('holdings', JSON.stringify(holdings));
-                    
-                    // Update UI
-                    loadHoldings();
-                    
-                    // Show confirmation
-                    hideLoading();
-                    showConfirmation();
-                }
-            }, 2000);
-        }
-        
-        // Populate sell tokens dropdown
-        function populateSellTokens() {
-            const holdings = JSON.parse(localStorage.getItem('holdings'));
-            const select = document.getElementById('sellToken');
-            select.innerHTML = '<option value="">Select a token</option>';
-            
-            const tokenMap = new Map();
-            holdings.forEach(holding => {
-                if (tokenMap.has(holding.tokenId)) {
-                    tokenMap.set(holding.tokenId, tokenMap.get(holding.tokenId) + holding.amount);
-                } else {
-                    tokenMap.set(holding.tokenId, holding.amount);
-                }
             });
             
-            tokenMap.forEach((amount, tokenId) => {
-                const option = document.createElement('option');
-                option.value = tokenId;
-                option.textContent = `${tokenId} (${amount.toFixed(2)})`;
-                select.appendChild(option);
-            });
-        }
-        
-        // Populate destination wallets
-        function populateDestinationWallets() {
-            const wallets = JSON.parse(localStorage.getItem('wallets'));
-            const select = document.getElementById('destinationWallet');
-            select.innerHTML = '';
-            
-            wallets.forEach(wallet => {
-                const option = document.createElement('option');
-                option.value = wallet.id;
-                option.textContent = `${wallet.name} ($${wallet.balance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
-                select.appendChild(option);
-            });
-        }
-        
-        // Set sell amount based on percentage
-        function setSellAmount(percent) {
-            const tokenId = document.getElementById('sellToken').value;
-            if (!tokenId) {
-                alert('Please select a token first');
-                return;
-            }
-            
-            const holdings = JSON.parse(localStorage.getItem('holdings'));
-            const tokenHoldings = holdings.filter(h => h.tokenId === tokenId);
-            const totalAmount = tokenHoldings.reduce((sum, holding) => sum + holding.amount, 0);
-            
-            document.getElementById('sellAmount').value = (totalAmount * percent).toFixed(2);
-        }
-        
-        // Execute sell order
-        function executeSell() {
-            const tokenId = document.getElementById('sellToken').value;
-            const amount = parseFloat(document.getElementById('sellAmount').value);
-            const destWalletId = document.getElementById('destinationWallet').value;
-            
-            if (!tokenId) {
-                alert('Please select a token to sell');
-                return;
-            }
-            
-            if (isNaN(amount)) {
-                alert('Please enter a valid amount');
-                return;
-            }
-            
-            if (!destWalletId) {
-                alert('Please select a destination wallet');
-                return;
-            }
-            
-            // Get holdings for this token
-            const holdings = JSON.parse(localStorage.getItem('holdings'));
-            const tokenHoldings = holdings.filter(h => h.tokenId === tokenId);
-            
-            // Calculate total amount held
-            const totalAmount = tokenHoldings.reduce((sum, holding) => sum + holding.amount, 0);
-            
-            if (amount > totalAmount) {
-                alert(`You only have ${totalAmount.toFixed(2)} ${tokenId} to sell`);
-                return;
-            }
-            
-            // Calculate average buy price
-            const totalValue = tokenHoldings.reduce((sum, holding) => sum + (holding.amount * holding.buyPrice), 0);
-            const avgBuyPrice = totalValue / totalAmount;
-            
-            // Generate random sell price (within ±30% of buy price)
-            const variation = (Math.random() * 0.6) - 0.3; // -30% to +30%
-            const sellPrice = avgBuyPrice * (1 + variation);
-            
-            // Calculate proceeds and profit/loss
-            const proceeds = amount * sellPrice;
-            const costBasis = amount * avgBuyPrice;
-            const netResult = proceeds - costBasis;
-            
-            // Show loading
-            showLoading();
-            
-            // Simulate trade execution
-            setTimeout(() => {
-                // Update holdings
-                let remaining = amount;
-                const newHoldings = holdings.filter(holding => {
-                    if (holding.tokenId !== tokenId) return true;
-                    
-                    if (remaining > 0) {
-                        if (holding.amount <= remaining) {
-                            remaining -= holding.amount;
-                            return false; // Remove this holding
+            // Dial call button
+            elements.dialCallButton.addEventListener('click', () => {
+                const number = elements.dialInput.textContent;
+                if (number) {
+                    // Check if it's a handle
+                    if (number.startsWith('@')) {
+                        const contacts = JSON.parse(localStorage.getItem('contacts'));
+                        const contact = contacts.find(c => c.handle === number);
+                        if (contact) {
+                            startCall(contact);
                         } else {
-                            holding.amount -= remaining;
-                            remaining = 0;
-                            return true; // Keep with reduced amount
+                            // Create a temporary contact for the call
+                            startCall({ handle: number, name: number, phone: 'Unknown' });
                         }
+                    } else {
+                        // Regular phone number
+                        startCall({ handle: number, name: number, phone: number });
                     }
-                    return true;
-                });
-                
-                localStorage.setItem('holdings', JSON.stringify(newHoldings));
-                
-                // Update destination wallet
-                const wallets = JSON.parse(localStorage.getItem('wallets'));
-                const destWallet = wallets.find(w => w.id == destWalletId);
-                if (destWallet) {
-                    destWallet.balance += proceeds;
-                    localStorage.setItem('wallets', JSON.stringify(wallets));
-                    updateTotalBalance();
                 }
-                
-                // Update UI
-                loadHoldings();
-                
-                // Hide loading and show confirmation
-                hideLoading();
-                
-                // Show trade summary
-                document.getElementById('summaryCard').style.display = 'block';
-                document.getElementById('summaryToken').textContent = tokenId;
-                document.getElementById('summaryBought').textContent = `$${costBasis.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                document.getElementById('summarySold').textContent = `$${proceeds.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                
-                const netElem = document.getElementById('summaryNet');
-                netElem.textContent = `$${Math.abs(netResult).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                netElem.className = netResult >= 0 ? 'summary-value net-value profit' : 'summary-value net-value loss';
-                netElem.innerHTML = (netResult >= 0 ? '+' : '-') + netElem.innerHTML;
-                
-                showConfirmation();
-            }, 2000);
-        }
-        
-        // Load holdings
-        function loadHoldings() {
-            const holdings = JSON.parse(localStorage.getItem('holdings'));
-            const holdingsList = document.getElementById('holdingsList');
-            holdingsList.innerHTML = '';
-            
-            // Group holdings by token
-            const grouped = {};
-            holdings.forEach(holding => {
-                if (!grouped[holding.tokenId]) {
-                    grouped[holding.tokenId] = {
-                        amount: 0,
-                        totalValue: 0
-                    };
-                }
-                grouped[holding.tokenId].amount += holding.amount;
-                grouped[holding.tokenId].totalValue += holding.amount * holding.buyPrice;
             });
             
-            // Create list items
-            Object.keys(grouped).forEach(tokenId => {
-                const holding = grouped[tokenId];
-                const avgPrice = holding.totalValue / holding.amount;
-                
-                const holdingItem = document.createElement('div');
-                holdingItem.className = 'holding-item';
-                holdingItem.innerHTML = `
-                    <div class="token-info">
-                        <div class="token-icon">${tokenId.substring(0, 2)}</div>
-                        <div class="token-details">
-                            <div class="token-name">${tokenId}</div>
-                            <div class="token-meta">Avg: $${avgPrice.toFixed(2)}</div>
-                        </div>
+            // Call control buttons
+            elements.muteButton.addEventListener('click', toggleMute);
+            elements.speakerButton.addEventListener('click', toggleSpeaker);
+            elements.addCallButton.addEventListener('click', addCall);
+            elements.endCallButton.addEventListener('click', endCall);
+            
+            // Settings
+            elements.darkModeToggle.addEventListener('change', toggleDarkMode);
+            elements.clearCallLogs.addEventListener('click', () => {
+                showConfirmation('Clear Call Logs', 'Are you sure you want to clear all call logs?', clearCallLogs);
+            });
+            elements.clearContacts.addEventListener('click', () => {
+                showConfirmation('Clear Contacts', 'Are you sure you want to clear all contacts?', clearContacts);
+            });
+            
+            // Add contact form
+            elements.saveContact.addEventListener('click', saveContact);
+            
+            // Modal buttons
+            elements.modalCancel.addEventListener('click', hideModal);
+            elements.modalConfirm.addEventListener('click', confirmModalAction);
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Update active tab
+            elements.tabs.forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Show appropriate content
+            elements.tabContents.forEach(content => {
+                if (content.id === `${tabName}-tab`) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+            
+            // Update header
+            elements.header.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+            
+            // Store current tab
+            state.currentTab = tabName;
+        }
+
+        // Render contacts list
+        function renderContacts() {
+            const contacts = JSON.parse(localStorage.getItem('contacts'));
+            const searchTerm = elements.contactSearch.value.toLowerCase();
+            
+            // Filter contacts based on search term
+            const filteredContacts = contacts.filter(contact => {
+                return contact.name.toLowerCase().includes(searchTerm) || 
+                       contact.handle.toLowerCase().includes(searchTerm);
+            });
+            
+            // Clear current list
+            elements.contactList.innerHTML = '';
+            
+            // Add contacts to list
+            filteredContacts.forEach(contact => {
+                const li = document.createElement('li');
+                li.className = 'contact-item';
+                li.innerHTML = `
+                    <div class="contact-avatar">${getInitials(contact.name)}</div>
+                    <div class="contact-info">
+                        <div class="contact-name">${contact.name} ${contact.favorite ? '<span class="favorite-icon">⭐</span>' : ''}</div>
+                        <div class="contact-handle">${contact.handle}</div>
                     </div>
-                    <div class="token-value">
-                        <div class="token-amount">${holding.amount.toFixed(2)}</div>
-                        <div class="token-price">$${(holding.amount * avgPrice).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div class="call-button" data-handle="${contact.handle}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.487 17.14L16.422 13.917C16.052 13.643 15.53 13.692 15.218 14.029L13.279 16.168C10.954 14.857 9.134 13.037 7.822 10.711L9.961 8.781C10.299 8.469 10.347 7.947 10.073 7.576L6.85 3.512C6.575 3.141 6.05 3.086 5.704 3.392L3.394 5.343C2.928 5.74 2.678 6.308 2.711 6.9C2.911 9.576 4.079 12.148 6.044 14.314C8.009 16.48 10.691 18.166 13.7 19.089C14.291 19.268 14.916 19.216 15.463 18.94L17.608 16.841C17.972 16.565 18.015 16.042 17.71 15.698" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 `;
                 
-                holdingsList.appendChild(holdingItem);
+                // Add click event to call button
+                const callButton = li.querySelector('.call-button');
+                callButton.addEventListener('click', () => {
+                    startCall(contact);
+                });
+                
+                // Add click event to contact item for editing
+                li.addEventListener('click', (e) => {
+                    if (e.target !== callButton && !callButton.contains(e.target)) {
+                        // For simplicity, we'll just call the contact
+                        startCall(contact);
+                    }
+                });
+                
+                elements.contactList.appendChild(li);
             });
             
-            if (Object.keys(grouped).length === 0) {
-                holdingsList.innerHTML = '<div class="empty-state">No holdings yet. Buy some tokens to get started!</div>';
+            // Add "Add Contact" button
+            const addButton = document.createElement('li');
+            addButton.className = 'contact-item';
+            addButton.innerHTML = `
+                <div class="contact-avatar">+</div>
+                <div class="contact-info">
+                    <div class="contact-name">Add New Contact</div>
+                </div>
+            `;
+            addButton.addEventListener('click', () => {
+                switchTab('add-contact');
+            });
+            elements.contactList.appendChild(addButton);
+        }
+
+        // Render call logs
+        function renderCallLogs(filter = 'all') {
+            const callLogs = JSON.parse(localStorage.getItem('callLogs'));
+            
+            // Filter call logs based on filter
+            let filteredLogs = callLogs;
+            if (filter !== 'all') {
+                filteredLogs = callLogs.filter(log => log.type === filter);
+            }
+            
+            // Clear current list
+            elements.callLogList.innerHTML = '';
+            
+            // Add call logs to list
+            filteredLogs.forEach(log => {
+                const li = document.createElement('li');
+                li.className = 'call-log-item';
+                
+                // Determine call icon based on type
+                let callIcon = '📞';
+                if (log.type === 'missed') callIcon = '❌';
+                if (log.type === 'incoming') callIcon = '📥';
+                
+                li.innerHTML = `
+                    <div class="call-log-avatar">${getInitials(log.name)}</div>
+                    <div class="call-log-info">
+                        <div class="call-log-name">${log.name}</div>
+                        <div class="call-log-details">${log.type} ${callIcon}</div>
+                    </div>
+                    <div class="call-log-time">${formatTime(log.timestamp)}</div>
+                    <div class="call-button" data-handle="${log.handle}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.487 17.14L16.422 13.917C16.052 13.643 15.53 13.692 15.218 14.029L13.279 16.168C10.954 14.857 9.134 13.037 7.822 10.711L9.961 8.781C10.299 8.469 10.347 7.947 10.073 7.576L6.85 3.512C6.575 3.141 6.05 3.086 5.704 3.392L3.394 5.343C2.928 5.74 2.678 6.308 2.711 6.9C2.911 9.576 4.079 12.148 6.044 14.314C8.009 16.48 10.691 18.166 13.7 19.089C14.291 19.268 14.916 19.216 15.463 18.94L17.608 16.841C17.972 16.565 18.015 16.042 17.71 15.698" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                `;
+                
+                // Add click event to call button
+                const callButton = li.querySelector('.call-button');
+                callButton.addEventListener('click', () => {
+                    startCall({ handle: log.handle, name: log.name, phone: log.number });
+                });
+                
+                elements.callLogList.appendChild(li);
+            });
+        }
+
+        // Render favorites
+        function renderFavorites() {
+            const contacts = JSON.parse(localStorage.getItem('contacts'));
+            const favorites = contacts.filter(contact => contact.favorite);
+            
+            // Clear current list
+            elements.favoritesList.innerHTML = '';
+            
+            // Add favorites to list
+            favorites.forEach(contact => {
+                const li = document.createElement('li');
+                li.className = 'favorite-item';
+                li.innerHTML = `
+                    <div class="favorite-avatar">${getInitials(contact.name)}</div>
+                    <div class="favorite-info">
+                        <div class="favorite-name">${contact.name}</div>
+                        <div class="favorite-handle">${contact.handle}</div>
+                    </div>
+                    <div class="call-button" data-handle="${contact.handle}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.487 17.14L16.422 13.917C16.052 13.643 15.53 13.692 15.218 14.029L13.279 16.168C10.954 14.857 9.134 13.037 7.822 10.711L9.961 8.781C10.299 8.469 10.347 7.947 10.073 7.576L6.85 3.512C6.575 3.141 6.05 3.086 5.704 3.392L3.394 5.343C2.928 5.74 2.678 6.308 2.711 6.9C2.911 9.576 4.079 12.148 6.044 14.314C8.009 16.48 10.691 18.166 13.7 19.089C14.291 19.268 14.916 19.216 15.463 18.94L17.608 16.841C17.972 16.565 18.015 16.042 17.71 15.698" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                `;
+                
+                // Add click event to call button
+                const callButton = li.querySelector('.call-button');
+                callButton.addEventListener('click', () => {
+                    startCall(contact);
+                });
+                
+                elements.favoritesList.appendChild(li);
+            });
+        }
+
+        // Start a call
+        function startCall(contact) {
+            // Set up call screen
+            elements.callerAvatar.textContent = getInitials(contact.name);
+            elements.callerName.textContent = contact.name;
+            elements.callerHandle.textContent = contact.handle;
+            elements.callStatus.textContent = 'Dialing...';
+            elements.callTimer.classList.add('hidden');
+            
+            // Reset conference participants
+            elements.conferenceParticipants.innerHTML = '';
+            state.conferenceParticipants = [contact];
+            
+            // Show call screen
+            elements.callScreen.classList.add('active');
+            
+            // Store current call
+            state.currentCall = contact;
+            state.callTime = 0;
+            
+            // Simulate call progression
+            setTimeout(() => {
+                elements.callStatus.textContent = 'Ringing...';
+            }, 1500);
+            
+            setTimeout(() => {
+                elements.callStatus.textContent = 'Connected';
+                elements.callTimer.classList.remove('hidden');
+                
+                // Start timer
+                startCallTimer();
+            }, 4000);
+            
+            // Add to call logs
+            addCallLog(contact, 'outgoing');
+        }
+
+        // Start call timer
+        function startCallTimer() {
+            clearInterval(state.callTimer);
+            state.callTime = 0;
+            
+            state.callTimer = setInterval(() => {
+                state.callTime++;
+                elements.callTimer.textContent = formatCallTime(state.callTime);
+            }, 1000);
+        }
+
+        // End current call
+        function endCall() {
+            // Hide call screen
+            elements.callScreen.classList.remove('active');
+            
+            // Stop timer
+            clearInterval(state.callTimer);
+            
+            // Update call log with duration
+            if (state.currentCall) {
+                const callLogs = JSON.parse(localStorage.getItem('callLogs'));
+                const lastLog = callLogs[callLogs.length - 1];
+                
+                if (lastLog && lastLog.handle === state.currentCall.handle) {
+                    lastLog.duration = state.callTime;
+                    localStorage.setItem('callLogs', JSON.stringify(callLogs));
+                }
+            }
+            
+            // Reset current call
+            state.currentCall = null;
+            state.conferenceParticipants = [];
+        }
+
+        // Toggle mute
+        function toggleMute() {
+            elements.muteButton.classList.toggle('active');
+        }
+
+        // Toggle speaker
+        function toggleSpeaker() {
+            elements.speakerButton.classList.toggle('active');
+        }
+
+        // Add another call (conference)
+        function addCall() {
+            // For simplicity, we'll just add a random participant
+            const contacts = JSON.parse(localStorage.getItem('contacts'));
+            const availableContacts = contacts.filter(contact => 
+                !state.conferenceParticipants.some(p => p.handle === contact.handle)
+            );
+            
+            if (availableContacts.length > 0) {
+                const randomContact = availableContacts[Math.floor(Math.random() * availableContacts.length)];
+                state.conferenceParticipants.push(randomContact);
+                
+                // Add participant to UI
+                const participant = document.createElement('div');
+                participant.className = 'participant';
+                participant.innerHTML = `
+                    <div class="participant-avatar">${getInitials(randomContact.name)}</div>
+                    <div class="participant-name">${randomContact.name}</div>
+                `;
+                
+                elements.conferenceParticipants.appendChild(participant);
             }
         }
-        
-        // Show loading overlay
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.add('active');
+
+        // Add call log
+        function addCallLog(contact, type) {
+            const callLogs = JSON.parse(localStorage.getItem('callLogs'));
+            
+            callLogs.unshift({
+                handle: contact.handle,
+                name: contact.name,
+                number: contact.phone,
+                type: type,
+                timestamp: Date.now(),
+                duration: 0
+            });
+            
+            localStorage.setItem('callLogs', JSON.stringify(callLogs));
+            
+            // Update missed call badge if needed
+            if (type === 'missed') {
+                state.missedCalls++;
+                updateMissedCallBadge();
+            }
+            
+            // Re-render call logs
+            renderCallLogs();
         }
-        
-        // Hide loading overlay
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            const settings = JSON.parse(localStorage.getItem('settings'));
+            settings.darkMode = elements.darkModeToggle.checked;
+            localStorage.setItem('settings', JSON.stringify(settings));
+            
+            applyTheme();
         }
-        
-        // Show confirmation overlay
-        function showConfirmation() {
-            document.getElementById('confirmation').classList.add('active');
-            document.getElementById('confirmationOverlay').classList.add('active');
+
+        // Apply theme based on settings
+        function applyTheme() {
+            const settings = JSON.parse(localStorage.getItem('settings'));
+            
+            if (settings.darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                elements.darkModeToggle.checked = true;
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                elements.darkModeToggle.checked = false;
+            }
         }
-        
-        // Hide confirmation overlay
-        function hideConfirmation() {
-            document.getElementById('confirmation').classList.remove('active');
-            document.getElementById('confirmationOverlay').classList.remove('active');
-            resetFormFields();
+
+        // Clear call logs
+        function clearCallLogs() {
+            localStorage.setItem('callLogs', JSON.stringify([]));
+            renderCallLogs();
+            hideModal();
         }
-        
-        // Reset form fields
-        function resetFormFields() {
-            document.getElementById('tokenId').value = '';
-            document.getElementById('buyAmount').value = '';
-            document.getElementById('sellToken').selectedIndex = 0;
-            document.getElementById('sellAmount').value = '';
-            document.getElementById('destinationWallet').selectedIndex = 0;
-            document.getElementById('summaryCard').style.display = 'none';
+
+        // Clear contacts
+        function clearContacts() {
+            localStorage.setItem('contacts', JSON.stringify([]));
+            renderContacts();
+            hideModal();
         }
+
+        // Save new contact
+        function saveContact() {
+            const handle = elements.contactHandle.value;
+            const name = elements.contactName.value;
+            const phone = elements.contactPhone.value;
+            
+            if (handle && name && phone) {
+                const contacts = JSON.parse(localStorage.getItem('contacts'));
+                
+                // Check for duplicate handle
+                if (contacts.some(contact => contact.handle === handle)) {
+                    alert('A contact with this handle already exists!');
+                    return;
+                }
+                
+                // Add new contact
+                contacts.push({
+                    handle: handle,
+                    name: name,
+                    phone: phone,
+                    favorite: false
+                });
+                
+                localStorage.setItem('contacts', JSON.stringify(contacts));
+                
+                // Clear form
+                elements.contactHandle.value = '';
+                elements.contactName.value = '';
+                elements.contactPhone.value = '';
+                
+                // Render contacts
+                renderContacts();
+                
+                // Switch back to contacts tab
+                switchTab('contacts');
+            } else {
+                alert('Please fill in all fields!');
+            }
+        }
+
+        // Show confirmation modal
+        function showConfirmation(title, message, confirmAction) {
+            elements.modalTitle.textContent = title;
+            elements.modalMessage.textContent = message;
+            elements.modalConfirm.dataset.action = confirmAction.name;
+            elements.confirmationModal.classList.add('active');
+            
+            // Store the action to execute on confirm
+            state.pendingAction = confirmAction;
+        }
+
+        // Hide modal
+        function hideModal() {
+            elements.confirmationModal.classList.remove('active');
+        }
+
+        // Confirm modal action
+        function confirmModalAction() {
+            if (state.pendingAction) {
+                state.pendingAction();
+                state.pendingAction = null;
+            }
+        }
+
+        // Update missed call badge
+        function updateMissedCallBadge() {
+            if (state.missedCalls > 0) {
+                elements.missedCallBadge.textContent = state.missedCalls;
+                elements.missedCallBadge.classList.remove('hidden');
+            } else {
+                elements.missedCallBadge.classList.add('hidden');
+            }
+        }
+
+        // Utility function to get initials from name
+        function getInitials(name) {
+            return name.split(' ').map(part => part[0]).join('').toUpperCase();
+        }
+
+        // Utility function to format time
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Utility function to format call time
+        function formatCallTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Initialize the app when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
